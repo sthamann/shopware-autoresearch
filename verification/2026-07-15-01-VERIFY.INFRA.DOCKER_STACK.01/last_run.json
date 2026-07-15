@@ -1,0 +1,22 @@
+{
+  "claim_id": "VERIFY.INFRA.DOCKER_STACK.01",
+  "ts": "2026-07-15T09:55:31+02:00",
+  "verdict": "pass",
+  "gates": {
+    "compose_files_exist": true,
+    "docker_daemon_running": true,
+    "services_running": true,
+    "database_healthy": true,
+    "storefront_http_ok": true
+  },
+  "metrics": {
+    "compose_base": "/Users/stefanhamann/Projekte/auto-research-shopware/repos/shopware/compose.yaml",
+    "compose_override": "/Users/stefanhamann/Projekte/auto-research-shopware/compose.override.yaml",
+    "docker_daemon": true,
+    "compose_up_exit": 0,
+    "services_running": true,
+    "database_healthy": true,
+    "storefront_status": 200,
+    "storefront_ok": true
+  }
+}

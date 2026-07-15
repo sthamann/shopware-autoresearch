@@ -1,0 +1,35 @@
+# Verification Memory
+
+`tools/memory.py` indexes **claims** (registry ground truth) and **plans**
+(`<plans_dir>/*.md`, proposals — no registry row) into a linked tree
+**track → family → claim** plus plan→claim edges. Auto-rebuild on staleness
+(fast, stdlib only).
+
+## Mandatory
+
+For questions of the form "what was already tried / what was the result /
+what is the state of front X / is there a claim or plan for this" — query
+the index **first**, do not read hundreds of claim folders or plans:
+
+```bash
+python3 tools/memory.py fronts              # fronts + linked plans
+python3 tools/memory.py query "<topic>"     # BM25: claims + plans (labeled)
+python3 tools/memory.py plans "<topic>"     # plans (proposals) only
+python3 tools/memory.py show <CLAIM>        # dossier + referenced-by-plans
+python3 tools/memory.py related <CLAIM>     # deps, siblings, plans, similar
+python3 tools/memory.py recent --days 3     # recently moved claims
+```
+
+- Before `register.py` (new claim): `query` the topic — duplicate /
+  prior-work check across **claims and plans**. Mandatory.
+- After a Failed claim (downstream sweep): `show <claim>` → `required by:`.
+- `--json` on every query command for subagents/scripts.
+
+## Boundaries
+
+- The registry (`registry.csv`) stays ground truth for claims; plans are
+  proposals and register nothing.
+- `<verification_dir>/memory/` is generated (`.gitignore`) — never edit,
+  never commit.
+- Code-structure questions (who calls what) → your code-index tooling,
+  not this index. Exact string/config literals → grep.

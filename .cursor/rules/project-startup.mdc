@@ -1,0 +1,30 @@
+# Project Startup
+
+Understand before code. Agent entry point: `AGENTS.md` at the repo root.
+
+Before changing any substantive module:
+
+1. The project's **big-picture doc** (§0 one-sentence law + §1 core model
+   minimum) — see `templates/big-picture.template.md` for the expected shape
+2. Local `README.md` (+ `contract.json` if the module declares one)
+3. `tools/memory.py fronts` or `registry.csv` — live status of the area
+4. `tools/scan.py --active-only` — open claims touching your paths
+   (`--files <path>`)
+
+**Do not write feature code** until the target change has a registered
+claim with frozen, measurable acceptance gates
+(see `verification-lifecycle.mdc`).
+
+## Structural exploration (before code)
+
+If the task needs architecture, call-graph, or blast-radius understanding,
+use the project's code-index tooling first (code graph, LSP, or targeted
+search) — then read files at line level. Do not blind-grep the whole repo
+for questions the project docs answer.
+
+## Agent discipline
+
+* Smallest correct diff. No drive-by refactors inside a claim's scope.
+* If unsure: read docs, query the memory index, ask — do not improvise a
+  parallel mechanism (`no-shadow-systems.mdc`).
+* Update the README/CHANGELOG of every module you touch.

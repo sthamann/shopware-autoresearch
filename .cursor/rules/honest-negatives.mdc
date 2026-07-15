@@ -1,0 +1,40 @@
+# Honest Negatives
+
+A clean **Failed** is a first-class research result — it prevents every
+future session from re-walking the same dead end.
+
+## When Failed is the correct outcome
+
+* The gate ran cleanly and failed on **capability**, not on a wiring bug
+* The mechanism was built correctly but shows no lift (or honest harm)
+* The missing capability can be **named** in one sentence
+
+## Required on every Failed claim
+
+1. `last_run.json` reflects the failure honestly (no massaged numbers)
+2. Registry status → **Failed** (not left Planned, never marked Verified)
+3. Claim `README.md` → verdict + the named missing capability
+4. Downstream sweep: decide every Planned claim that depends on this one
+   (re-hang / re-scope / close) — see `verification-lifecycle.mdc`
+
+## Forbidden "fixes"
+
+* Workarounds that make the number green by bypassing the measured system
+* Re-labeling a capability failure as "mechanism works, ship it"
+* Silently deleting the claim instead of recording the negative
+* Retrying the identical approach without a new capability or new scope
+
+## Terminal negatives
+
+When an approach has failed with a **named structural reason** (not flaky
+infrastructure), mark it terminal in the claim's notes: *"no retry without
+a new capability."* Future sessions must not reopen it unless they bring a
+genuinely new primitive — cite the new capability in the superseding claim.
+
+## Mechanism vs capability (keep the verdicts separate)
+
+| | Mechanism verified | Capability failed |
+|---|---|---|
+| Example | Feature wired, structural gates pass | Quality metric misses threshold |
+| Registry | Failed is OK — record both facts in README | Do not mark Verified |
+| Next step | New capability claim | Not: tune the measurement |

@@ -1,0 +1,35 @@
+# Pawl Verification Framework — Rule Index
+
+> Guard rails for registry-driven, agent-executed development with Pawl.
+> Copy the rules in this folder into your project's `.cursor/rules/` and
+> adapt the `<PLACEHOLDERS>` (paths, harness command, primary metric).
+
+| Rule | Topic |
+|---|---|
+| `verification-lifecycle.mdc` | Registry is ground truth; no green gate → not implemented |
+| `metric-integrity.mdc` | Honest measurement; a benchmark a workaround can win is invalid |
+| `no-shadow-systems.mdc` | One canonical implementation per concern |
+| `honest-negatives.mdc` | Failed is a result; downstream sweep; terminal negatives |
+| `project-startup.mdc` | Read before edit; big picture first |
+| `verification-memory.mdc` | Query the claim index before searching or re-registering |
+
+**Project skills** (copy `skills/` into `.cursor/skills/`):
+
+| Skill | When |
+|---|---|
+| `project-startup` | Start of any substantive task — what to read by task type |
+| `claim-lifecycle` | New claim, promote Planned → Verified/Failed |
+| `verification-memory` | What was tried, exact results, front status |
+| `honest-negative` | A claim fails — close it cleanly, sweep dependents |
+| `plan-fact-check` | Verify plans against registry + code |
+| `fast-iteration` | Cheap dev loops before the official gate run |
+| `parallel-workers` | Multiple agent sessions without file races |
+
+## The golden rules (one line each)
+
+- Plans are proposals; the **registry is ground truth**.
+- **No green verification → feature is not implemented.**
+- Define measurable success criteria **before** implementation; freeze the gates.
+- Honest negatives are first-class results; a Failed claim triggers a
+  downstream sweep of everything that depended on it.
+- A metric win that bypasses the measured system is a loss — reject it.

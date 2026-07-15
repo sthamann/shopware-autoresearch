@@ -1,0 +1,11 @@
+# Multirepo overrides — merged on top of repos/shopware/compose.yaml.
+# Add extension repos from ./extensions/* as Shopware plugin mounts.
+#
+# Run from repo root:
+#   docker compose -f repos/shopware/compose.yaml -f compose.override.yaml up -d
+
+services:
+  web:
+    volumes:
+      # Example: mount a sibling extension checkout into Shopware custom/plugins
+      # - ./extensions/MyPlugin:/var/www/html/custom/plugins/MyPlugin

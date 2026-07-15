@@ -1,0 +1,52 @@
+# Metric Integrity
+
+Honest measurement is the foundation: the registry is only ground truth if
+the gates behind it cannot be gamed.
+
+## The invalidity law
+
+> **A benchmark that can be won by gaming the measurement is invalid.**
+
+Examples of forbidden wins (adapt to your domain):
+
+* caching or special-casing benchmark inputs / test fixtures
+* weakening assertions or widening thresholds after seeing results
+* measuring a warmed path and reporting it as cold-start
+* reporting a subset run ("the fast 5 items") as the full suite
+* letting the experiment edit the harness that scores it
+
+## Separate what may be reported
+
+| Mode | Reportable as headline result? |
+|---|---|
+| Fixed harness, honest conditions, full suite | **Yes** — the authoritative number |
+| Dev shortcut (subset, reuse, warm cache) | No — iteration signal only, label it |
+| Sanity/mechanics check | No — proves wiring, not capability |
+
+Never present the second or third row as the first. When in doubt, label
+runs explicitly: `official` vs `dev-shortcut`.
+
+## Every scored run must record
+
+- exact command + config (hash or verbatim), code version (commit), seed
+- environment pins that affect the number (dataset version, fixture set)
+- per-gate results, not just the aggregate verdict
+- anything that would make the run non-comparable to its baseline
+
+Two runs are comparable only when code, config, and environment match on
+every declared dimension except the one under test.
+
+## Negative controls (suite design)
+
+Build traps into your gates that catch dishonest passes:
+
+* an impossible item (correct behavior = abstain/error, a "pass" = bug)
+* a shuffled-label or corrupted-fixture trap (must fail)
+* a trivially-green trap (gate must not pass with the feature disabled —
+  run the gate once with the change OFF and require it to fail)
+
+## The disabled-baseline rule
+
+Before trusting a green gate for claim X: run it with X's change absent or
+disabled. If it is still green, the gate measures nothing — fix the gate,
+not the report.

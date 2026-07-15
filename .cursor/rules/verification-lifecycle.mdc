@@ -1,0 +1,42 @@
+# Verification Lifecycle
+
+**No green verification → feature is not implemented.**
+**No measured positive impact → feature stays off (or is deleted).**
+
+## Before implementation
+
+1. `tools/memory.py query "<topic>"` — was this tried? Is there a claim or
+   plan already? (duplicate / prior-work check, mandatory)
+2. `tools/scan.py` — coverage, duplicates, orphans
+3. `tools/register.py` (or `autoresearch/bootstrap_claim.py`) — registry row,
+   `status=Planned`. New family `<PREFIX>.<FAM>.*` → assign it to a track in
+   `tracks.json`. Re-scoping an old claim → set `--supersedes`.
+4. `tools/init_folder.py` — folder `YYYY-MM-DD-NN-CLAIM_ID` (registry first;
+   folders without a registry row are invalid orphans)
+5. Freeze the acceptance gates in the claim's `run.py` + README **before**
+   writing feature code — falsifiable, no trivial pass
+6. Update README + CHANGELOG of touched modules
+
+## After implementation
+
+```bash
+python3 tools/run.py <CLAIM_ID>       # official pass — the ONLY promotion path
+# plus your project's audits, e.g.:
+# <lint / typecheck / contract-coverage commands>
+```
+
+Only a green `tools/run.py` sets `status=Verified`. A green ad-hoc run,
+a passing unit test, or an autoresearch `keep` on main is **not** Verified.
+
+## Failed → downstream sweep (mandatory)
+
+When a claim goes **Failed**: immediately decide every **Planned** claim
+that lists it in `dependencies` — re-hang (onto the named missing
+capability), re-scope, or close (`active=false` + `notes` starting with
+`Closed <date>: <reason / superseded by CLAIM>`). The replacing claim sets
+`supersedes`. Triage: `tools/scan.py --stale-planned`.
+
+## Planned is not a terminal state
+
+Older than the staleness threshold without a decision → check: obsolete,
+duplicated, overtaken? Close or re-scope; do not let Planned rot.

@@ -1,0 +1,21 @@
+# Local / generated
+.DS_Store
+.env
+.env.local
+
+# Pawl generated memory index (rebuilt by memory.py)
+verification/memory/
+
+# Shopware / Docker (platform submodule has its own .gitignore)
+repos/shopware/var/
+repos/shopware/vendor/
+repos/shopware/node_modules/
+repos/shopware/public/
+
+# Extension build artifacts
+extensions/*/vendor/
+extensions/*/node_modules/
+
+# IDE
+.idea/
+*.swp

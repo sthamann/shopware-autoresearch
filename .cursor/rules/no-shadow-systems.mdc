@@ -1,0 +1,29 @@
+# No Shadow Systems
+
+One canonical implementation per concern. Extend canonical systems via
+their declared interface — never build a parallel copy.
+
+Forbidden:
+
+* A second implementation of an existing concern (second cache, second
+  config system, second job queue, second "temporary" data path)
+* Hidden state that influences the critical output path without a declared
+  owner and a claim that proves its impact
+* Downstream "repair" layers that patch up results instead of fixing the
+  source of truth
+* Special-case branches keyed on test/task identity (`if fixture_x`,
+  `if customer_y`) where a general mechanism is claimed
+* Components kept alive behind flags after their claim failed
+
+Every new stateful component must declare:
+
+* where it **writes** (which store/file/table, who owns it)
+* where it **reads**
+* which **interface/contract** covers it
+* which **verification claim** proves it
+
+**Dead-on-arrival test:** if removing the component does not change behavior
+or metrics → delete the wiring; do not hide it behind a flag.
+
+Failed experiments are deleted or closed in the registry — not left as
+dormant code paths.

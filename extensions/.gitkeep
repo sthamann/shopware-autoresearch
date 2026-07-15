@@ -1,0 +1,2 @@
+# Extension submodules mount here.
+# Add via: ./scripts/add-extension.sh <Name> <git-url>

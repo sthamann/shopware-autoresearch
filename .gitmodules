@@ -1,0 +1,7 @@
+[submodule "pawl"]
+	path = pawl
+	url = https://github.com/agentic-commerce-lab/pawl.git
+[submodule "repos/shopware"]
+	path = repos/shopware
+	url = https://github.com/shopware/shopware.git
+	branch = trunk

@@ -1,0 +1,2 @@
+claim_id,entry_id,created,claim,status,location,dependencies,script,scope,supersedes,notes,active
+VERIFY.INFRA.DOCKER_STACK.01,2026-07-15-01,2026-07-15,Shopware Docker stack from repos/shopware/compose.yaml starts healthy; web container responds HTTP 200 on / within 120s after up; database healthcheck passes; anti-pattern: do not patch upstream compose.yaml,Verified,verification/2026-07-15-01-VERIFY.INFRA.DOCKER_STACK.01,-,verification/2026-07-15-01-VERIFY.INFRA.DOCKER_STACK.01/run.py,compose.override.yaml;scripts/,,,true

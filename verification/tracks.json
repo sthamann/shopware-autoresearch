@@ -1,0 +1,40 @@
+{
+  "_comment": "Research tracks for auto-research-shopware claim families.",
+  "tracks": [
+    {
+      "id": "platform",
+      "label": "Shopware platform",
+      "description": "Core platform behavior on repos/shopware trunk",
+      "families": ["CORE", "API", "ADMIN", "STORE"]
+    },
+    {
+      "id": "extensions",
+      "label": "Extensions & plugins",
+      "description": "Custom plugins in extensions/ mounted into Shopware",
+      "families": ["EXT", "PLUGIN", "APP"]
+    },
+    {
+      "id": "agentic",
+      "label": "Agentic commerce",
+      "description": "UCP, AXP, WebMCP, sales-agent protocol integrations",
+      "families": ["UCP", "AXP", "MCP", "AGENT"]
+    },
+    {
+      "id": "infra",
+      "label": "Infrastructure & process",
+      "description": "Docker, submodules, Pawl hygiene, dev ergonomics",
+      "families": ["INFRA", "DOCS", "META"]
+    },
+    {
+      "id": "perf",
+      "label": "Performance",
+      "description": "Latency, throughput, resource usage on fixed bench",
+      "families": ["PERF"]
+    }
+  ],
+  "fallback": {
+    "id": "other",
+    "label": "Other",
+    "description": "Families without a track assignment — add them to tracks.json"
+  }
+}
