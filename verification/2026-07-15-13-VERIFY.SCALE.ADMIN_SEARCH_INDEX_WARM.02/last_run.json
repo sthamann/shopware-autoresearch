@@ -1,0 +1,16 @@
+{
+  "claim_id": "VERIFY.SCALE.ADMIN_SEARCH_INDEX_WARM.02",
+  "ts": "2026-07-15T11:06:47+02:00",
+  "verdict": "fail",
+  "gates": {
+    "corpus_at_least_100k": true,
+    "samples_collected": true,
+    "admin_search_p95_after_warm": false
+  },
+  "metrics": {
+    "p95_ms": 306.94,
+    "threshold_ms": 260.0,
+    "wave1_p95_ms": 307.78,
+    "product_count": 100000
+  }
+}

@@ -20,8 +20,6 @@ class ProductListRouteOptimizer extends AbstractProductListRoute
         'productNumber',
         'stock',
         'available',
-        'calculatedPrice',
-        'calculatedPrices',
         'coverId',
     ];
 

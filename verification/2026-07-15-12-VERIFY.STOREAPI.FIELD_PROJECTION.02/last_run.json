@@ -1,0 +1,27 @@
+{
+  "claim_id": "VERIFY.STOREAPI.FIELD_PROJECTION.02",
+  "ts": "2026-07-15T11:08:21+02:00",
+  "verdict": "fail",
+  "gates": {
+    "bench_ran": true,
+    "samples_collected": true,
+    "store_api_p95_projected": false
+  },
+  "metrics": {
+    "p95_ms": 108.83,
+    "threshold_ms": 80.0,
+    "wave1_p95_ms": 110.3,
+    "by_endpoint": {
+      "store_api_product_list": {
+        "p50_ms": 100.3,
+        "p95_ms": 108.83,
+        "request_count": 20
+      },
+      "admin_api_product_search": {
+        "p50_ms": 299.44,
+        "p95_ms": 303.01,
+        "request_count": 20
+      }
+    }
+  }
+}

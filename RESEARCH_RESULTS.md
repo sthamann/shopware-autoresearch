@@ -83,6 +83,35 @@
 3. `VERIFY.REQ.HOME_DEV_OVERHEAD.01` — unblock Strang 1 (profile home vs category)
 4. `VERIFY.STOREAPI.FIELD_PROJECTION.02` — deeper API payload optimization
 
+## Wave 2 — 2026-07-15
+
+### Summary table
+
+| Claim | Strand | Status | Target p95 | Measured p95 | Notes |
+|---|---|---|---:|---:|---|
+| VERIFY.SCALE.STOREFRONT_LISTING_TIGHT.02 | Scale | **Failed** | ≤ 150 ms | 177 ms | Close — aggregation trim holds; tighter gate not met |
+| VERIFY.SCALE.ADMIN_SEARCH_INDEX_WARM.02 | Scale | **Failed** | ≤ 260 ms | 307 ms | Index refresh + 10× query warm: no gain |
+| VERIFY.REQ.HOME_DEV_OVERHEAD.01 | Request | **Failed** | home ≤ 500 ms | 3087 ms | Home 17.6× slower than category (175 ms) |
+| VERIFY.STOREAPI.FIELD_PROJECTION.02 | API | **Failed** | ≤ 80 ms | 109 ms | Dropping calculatedPrice from includes: marginal |
+
+**Wave 2 score:** 0 Verified, 4 Failed
+
+### Key findings
+
+- **Listing headroom:** Category listing at 100k is **177 ms** p95 — already strong from Wave 1 aggregation trim; 150 ms needs different approach (HTTP cache on category, ES query shape).
+- **Admin search floor:** ~307 ms appears stable across heap tuning, index refresh, and query warming at 100k.
+- **Home dev bottleneck confirmed:** Home **3087 ms** vs category **175 ms** (17.6× ratio) — Strang 1 blocked until dev pipeline overhead on `/` is addressed.
+- **Store API floor:** ~109 ms with minimal includes — calculated price hydration likely dominates; sub-80 ms needs architectural change.
+
+### Wave 3 recommendations
+
+1. Profile home route (Vite HMR, session bootstrap, ESI blocks) — target sub-500 ms home
+2. Accept category listing ~177 ms as near-optimal; focus scale wins on admin search
+3. Admin search: try Admin API search criteria tuning (source filtering, no aggregations)
+4. Store API: Elasticsearch-backed list route or cached price snapshots
+
+---
+
 ## Artifacts
 
 | Path | Purpose |

@@ -1,0 +1,35 @@
+{
+  "claim_id": "VERIFY.REQ.HOME_DEV_OVERHEAD.01",
+  "ts": "2026-07-15T11:08:07+02:00",
+  "verdict": "fail",
+  "gates": {
+    "bench_ran": true,
+    "home_p95_bounded": false,
+    "category_p95_healthy": true,
+    "home_not_10x_category": false
+  },
+  "metrics": {
+    "home_p95_ms": 3086.92,
+    "category_p95_ms": 175.04,
+    "home_to_category_ratio": 17.64,
+    "home_threshold_ms": 500.0,
+    "category_threshold_ms": 250.0,
+    "by_request": {
+      "home": {
+        "p50_ms": 3044.12,
+        "p95_ms": 3086.92,
+        "request_count": 20
+      },
+      "category": {
+        "p50_ms": 172.45,
+        "p95_ms": 175.04,
+        "request_count": 20
+      },
+      "product_search": {
+        "p50_ms": 240.84,
+        "p95_ms": 245.32,
+        "request_count": 20
+      }
+    }
+  }
+}

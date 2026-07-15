@@ -1,0 +1,17 @@
+{
+  "claim_id": "VERIFY.SCALE.STOREFRONT_LISTING_TIGHT.02",
+  "ts": "2026-07-15T11:06:35+02:00",
+  "verdict": "fail",
+  "gates": {
+    "corpus_at_least_100k": true,
+    "samples_collected": true,
+    "category_listing_p95_tight": false
+  },
+  "metrics": {
+    "p95_ms": 176.87,
+    "threshold_ms": 150.0,
+    "wave1_p95_ms": 184.1,
+    "request_count": 25,
+    "product_count": 100000
+  }
+}
