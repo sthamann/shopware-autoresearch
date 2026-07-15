@@ -67,7 +67,9 @@ def fetch_product_count(base_url: str, token: str) -> int:
     if status >= 400:
         raise RuntimeError(f"product count query failed: HTTP {status}")
     data = json.loads(raw.decode("utf-8"))
-    return int((data.get("meta") or {}).get("total", 0))
+    meta = data.get("meta") or {}
+    total = meta.get("total", data.get("total", 0))
+    return int(total or 0)
 
 
 def main() -> int:

@@ -1,21 +1,21 @@
 {
   "claim_id": "VERIFY.SCALE.ADMIN_PRODUCT_SEARCH_P95.01",
-  "ts": "2026-07-15T10:02:04+02:00",
-  "verdict": "fail",
+  "ts": "2026-07-15T10:24:41+02:00",
+  "verdict": "pass",
   "gates": {
     "bench_ran": true,
-    "corpus_at_least_100k": false,
+    "corpus_at_least_100k": true,
     "samples_collected": true,
     "admin_search_p95_within_threshold": true
   },
   "metrics": {
-    "p95_ms": 74.4,
-    "p50_ms": 67.27,
+    "p95_ms": 300.68,
+    "p50_ms": 293.71,
     "request_count": 20,
-    "product_count": 0,
+    "product_count": 100000,
     "corpus_target": 100000,
-    "corpus_ready": false,
+    "corpus_ready": true,
     "threshold_ms": 3000.0,
-    "missing_capability": "100k product corpus not seeded (current=0)"
+    "missing_capability": null
   }
 }

@@ -89,6 +89,7 @@ Three performance strands — see `docs/big-picture.md`:
 python3 pawl/tools/memory.py fronts    # status per strand
 ./verification/bench/request/run_bench.sh
 ./verification/bench/api/run_bench.sh
+./verification/bench/scale/seed_corpus.sh   # ≥100k products (scale strand)
 ./verification/bench/scale/run_bench.sh
 ```
 
