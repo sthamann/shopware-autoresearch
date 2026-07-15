@@ -1,0 +1,31 @@
+{
+  "claim_id": "VERIFY.STOREAPI.ASSOCIATION_TRIM.01",
+  "ts": "2026-07-15T11:04:47+02:00",
+  "verdict": "fail",
+  "gates": {
+    "bench_ran": true,
+    "samples_collected": true,
+    "store_api_p95_within_threshold": false,
+    "response_has_products": false
+  },
+  "metrics": {
+    "p95_ms": 110.3,
+    "p50_ms": 101.99,
+    "baseline_ms": 97.0,
+    "threshold_ms": 85.0,
+    "request_count": 20,
+    "products_returned": 0,
+    "by_endpoint": {
+      "store_api_product_list": {
+        "p50_ms": 101.99,
+        "p95_ms": 110.3,
+        "request_count": 20
+      },
+      "admin_api_product_search": {
+        "p50_ms": 294.72,
+        "p95_ms": 303.68,
+        "request_count": 20
+      }
+    }
+  }
+}

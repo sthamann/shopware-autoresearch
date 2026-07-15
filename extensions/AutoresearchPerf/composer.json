@@ -1,0 +1,21 @@
+{
+    "name": "autoresearch/perf",
+    "description": "Autoresearch performance optimizations for Store API and storefront listing",
+    "version": "1.0.0",
+    "type": "shopware-platform-plugin",
+    "license": "MIT",
+    "require": {
+        "shopware/core": ">=6.7"
+    },
+    "extra": {
+        "shopware-plugin-class": "AutoresearchPerf\\AutoresearchPerf",
+        "label": {
+            "en-GB": "Autoresearch Performance"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "AutoresearchPerf\\": "src/"
+        }
+    }
+}

@@ -6,6 +6,12 @@
 
 services:
   web:
+    environment:
+      SHOPWARE_HTTP_CACHE_ENABLED: "1"
+      SHOPWARE_HTTP_DEFAULT_TTL: "7200"
     volumes:
-      # Example: mount a sibling extension checkout into Shopware custom/plugins
-      # - ./extensions/MyPlugin:/var/www/html/custom/plugins/MyPlugin
+      - ../../extensions/AutoresearchPerf:/var/www/html/custom/plugins/AutoresearchPerf
+
+  opensearch:
+    environment:
+      OPENSEARCH_JAVA_OPTS: "-Xms768m -Xmx768m"

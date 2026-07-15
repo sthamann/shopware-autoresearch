@@ -1,0 +1,20 @@
+{
+  "claim_id": "VERIFY.SCALE.ADMIN_SEARCH_ES_TUNING.01",
+  "ts": "2026-07-15T11:05:05+02:00",
+  "verdict": "fail",
+  "gates": {
+    "bench_ran": true,
+    "corpus_at_least_100k": true,
+    "samples_collected": true,
+    "admin_search_p95_within_threshold": false
+  },
+  "metrics": {
+    "p95_ms": 307.78,
+    "p50_ms": 296.05,
+    "baseline_ms": 301.0,
+    "threshold_ms": 250.0,
+    "request_count": 20,
+    "product_count": 100000,
+    "corpus_target": 100000
+  }
+}

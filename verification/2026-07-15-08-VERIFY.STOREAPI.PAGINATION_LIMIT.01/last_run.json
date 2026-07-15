@@ -1,0 +1,29 @@
+{
+  "claim_id": "VERIFY.STOREAPI.PAGINATION_LIMIT.01",
+  "ts": "2026-07-15T11:04:57+02:00",
+  "verdict": "fail",
+  "gates": {
+    "bench_ran": true,
+    "samples_collected": true,
+    "store_api_p95_within_threshold": false
+  },
+  "metrics": {
+    "p95_ms": 103.96,
+    "p50_ms": 100.75,
+    "baseline_ms": 97.0,
+    "threshold_ms": 90.0,
+    "request_count": 20,
+    "by_endpoint": {
+      "store_api_product_list": {
+        "p50_ms": 100.75,
+        "p95_ms": 103.96,
+        "request_count": 20
+      },
+      "admin_api_product_search": {
+        "p50_ms": 296.35,
+        "p95_ms": 306.36,
+        "request_count": 20
+      }
+    }
+  }
+}

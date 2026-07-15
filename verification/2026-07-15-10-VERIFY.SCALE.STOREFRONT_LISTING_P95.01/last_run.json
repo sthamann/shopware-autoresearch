@@ -1,0 +1,19 @@
+{
+  "claim_id": "VERIFY.SCALE.STOREFRONT_LISTING_P95.01",
+  "ts": "2026-07-15T11:05:17+02:00",
+  "verdict": "pass",
+  "gates": {
+    "corpus_at_least_100k": true,
+    "samples_collected": true,
+    "category_listing_p95_within_threshold": true
+  },
+  "metrics": {
+    "p95_ms": 184.1,
+    "p50_ms": 164.15,
+    "threshold_ms": 2500.0,
+    "request_count": 20,
+    "product_count": 100000,
+    "category_path": "/page/cms/019f64c64f7971f09730538de8dd1f67",
+    "errors": []
+  }
+}
