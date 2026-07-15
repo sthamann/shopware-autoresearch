@@ -7,9 +7,11 @@
 
 | Priority | Doc |
 |---|---|
-| **First** | `docs/big-picture.md` — mission, one-sentence law, layers |
+| **First** | `docs/big-picture.md` — three performance strands, one-sentence law |
+| Strang 1 | Request-Performance — single HTTP request latency (`REQ`, `HTTP`, …) |
+| Strang 2 | API-Performance — Store/Admin/Sync API (`STOREAPI`, `ADMINAPI`, …) |
+| Strang 3 | Katalog-Skalierung — ≥ 100k products, storefront + admin (`SCALE`, …) |
 | Platform | `repos/shopware/` — Shopware trunk checkout (Docker dev stack) |
-| Extensions | `extensions/` — plugin submodules mounted into `custom/plugins/` |
 | Status | `verification/registry.csv` — claim status ground truth |
 | Proposals | `docs/plans/` — plans (proposals, NOT ground truth) |
 
@@ -34,9 +36,16 @@ python3 pawl/tools/run.py <CLAIM_ID>
 
 ## 4. Fixed harness
 
-Primary metric: **Shopware stack health + claim-specific gates** measured by
-`./scripts/dev-exec.sh <gate command>`. The harness is **fixed** — experiments
-may never edit `repos/shopware/compose.yaml`.
+Primary metrics (per strand, fixed harness):
+
+| Strand | Scalar |
+|---|---|
+| 1 Request | p95 response time on fixed request set |
+| 2 API | p95 per API family on fixed endpoints |
+| 3 Scale | p95 storefront + admin flows at ≥ 100k products |
+
+Measured by `verification/bench/<strand>/` (harness-owned). Experiments may
+never edit the harness or `repos/shopware/compose.yaml`.
 
 ## 5. Project audits (before merge)
 

@@ -75,17 +75,25 @@ services:
       - ./extensions/MyPlugin:/var/www/html/custom/plugins/MyPlugin
 ```
 
-## Pawl verification
+## Research program
+
+Three performance strands — see `docs/big-picture.md`:
+
+| # | Strand | Focus |
+|---|--------|-------|
+| 1 | **Request-Performance** | Single HTTP requests faster (TTFB, pipeline, caching) |
+| 2 | **API-Performance** | Store API, Admin API, Sync API optimization |
+| 3 | **Katalog-Skalierung** | ≥ 100k products — storefront + admin |
 
 ```bash
-TOOLS=pawl/tools
-
-python3 $TOOLS/memory.py fronts
-python3 $TOOLS/scan.py --audit
-python3 $TOOLS/register.py VERIFY.INFRA.DOCKER_STACK.01 "..."
-python3 $TOOLS/init_folder.py VERIFY.INFRA.DOCKER_STACK.01
-python3 $TOOLS/run.py VERIFY.INFRA.DOCKER_STACK.01
+python3 pawl/tools/memory.py fronts    # status per strand
+./verification/bench/request/run_bench.sh
+./verification/bench/api/run_bench.sh
+./verification/bench/scale/run_bench.sh
 ```
+
+Fixed harnesses live under `verification/bench/<strand>/` — sacred, harness-owned;
+see `verification/bench/README.md`.
 
 See `AGENTS.md` for the full agent workflow.
 

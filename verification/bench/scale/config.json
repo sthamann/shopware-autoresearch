@@ -1,0 +1,20 @@
+{
+  "base_url": "http://localhost:8000",
+  "corpus_target": 100000,
+  "warmup": 3,
+  "iterations": 20,
+  "admin": {
+    "client_id": "administration",
+    "username": "admin",
+    "password": "shopware"
+  },
+  "bench": {
+    "name": "admin_product_search",
+    "method": "POST",
+    "path": "/api/search/product",
+    "body": {
+      "limit": 25,
+      "term": "product"
+    }
+  }
+}

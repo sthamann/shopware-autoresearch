@@ -1,0 +1,23 @@
+{
+  "base_url": "http://localhost:8000",
+  "warmup": 3,
+  "iterations": 20,
+  "primary": "home",
+  "requests": [
+    {
+      "name": "home",
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "name": "category",
+      "method": "GET",
+      "path": "/page/cms/019f64c64f7971f09730538de8dd1f67"
+    },
+    {
+      "name": "product_search",
+      "method": "GET",
+      "path": "/search?search=main"
+    }
+  ]
+}

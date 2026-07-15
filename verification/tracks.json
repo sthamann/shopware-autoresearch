@@ -1,35 +1,32 @@
 {
-  "_comment": "Research tracks for auto-research-shopware claim families.",
+  "_comment": "Three performance research strands for shopware-autoresearch.",
   "tracks": [
     {
-      "id": "platform",
-      "label": "Shopware platform",
-      "description": "Core platform behavior on repos/shopware trunk",
-      "families": ["CORE", "API", "ADMIN", "STORE"]
+      "id": "request-perf",
+      "label": "Forschungsstrang 1 — Request-Performance",
+      "description": "Einzelne HTTP-Requests schneller: TTFB, PHP-Pipeline, Queries pro Request, Caching, Rendering",
+      "families": ["REQ", "HTTP", "TTFB", "PIPELINE", "CACHE"],
+      "success_criteria": "p95 total response time on fixed request set at reference catalog size"
     },
     {
-      "id": "extensions",
-      "label": "Extensions & plugins",
-      "description": "Custom plugins in extensions/ mounted into Shopware",
-      "families": ["EXT", "PLUGIN", "APP"]
+      "id": "api-perf",
+      "label": "Forschungsstrang 2 — API-Performance",
+      "description": "Store API, Admin API, Sync API und weitere APIs: Latenz, Payload, Pagination, Bulk",
+      "families": ["API", "STOREAPI", "ADMINAPI", "SYNCAPI", "GRAPHQL"],
+      "success_criteria": "p95 latency per API family on fixed API bench endpoints"
     },
     {
-      "id": "agentic",
-      "label": "Agentic commerce",
-      "description": "UCP, AXP, WebMCP, sales-agent protocol integrations",
-      "families": ["UCP", "AXP", "MCP", "AGENT"]
+      "id": "catalog-scale",
+      "label": "Forschungsstrang 3 — Katalog-Skalierung",
+      "description": "Performance bei hunderttausenden Produkten — Storefront und Administration",
+      "families": ["SCALE", "CATALOG", "ADMIN", "STORE", "SEARCH", "INDEX"],
+      "success_criteria": "p95 on representative storefront + admin flows at >= 100k products"
     },
     {
       "id": "infra",
       "label": "Infrastructure & process",
-      "description": "Docker, submodules, Pawl hygiene, dev ergonomics",
-      "families": ["INFRA", "DOCS", "META"]
-    },
-    {
-      "id": "perf",
-      "label": "Performance",
-      "description": "Latency, throughput, resource usage on fixed bench",
-      "families": ["PERF"]
+      "description": "Docker stack, benches, submodules, Pawl hygiene",
+      "families": ["INFRA", "DOCS", "META", "BENCH"]
     }
   ],
   "fallback": {

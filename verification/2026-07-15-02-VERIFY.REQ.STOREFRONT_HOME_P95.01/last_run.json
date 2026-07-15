@@ -1,0 +1,34 @@
+{
+  "claim_id": "VERIFY.REQ.STOREFRONT_HOME_P95.01",
+  "ts": "2026-07-15T10:01:57+02:00",
+  "verdict": "pass",
+  "gates": {
+    "bench_ran": true,
+    "samples_collected": true,
+    "home_p95_within_threshold": true
+  },
+  "metrics": {
+    "p95_ms": 206.67,
+    "p50_ms": 183.96,
+    "request_count": 20,
+    "primary": "home",
+    "threshold_ms": 1500.0,
+    "by_request": {
+      "home": {
+        "p50_ms": 183.96,
+        "p95_ms": 206.67,
+        "request_count": 20
+      },
+      "category": {
+        "p50_ms": 167.44,
+        "p95_ms": 179.53,
+        "request_count": 20
+      },
+      "product_search": {
+        "p50_ms": 183.06,
+        "p95_ms": 196.09,
+        "request_count": 20
+      }
+    }
+  }
+}

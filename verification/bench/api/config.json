@@ -1,0 +1,33 @@
+{
+  "base_url": "http://localhost:8000",
+  "warmup": 3,
+  "iterations": 20,
+  "primary": "store_api_product_list",
+  "admin": {
+    "client_id": "administration",
+    "username": "admin",
+    "password": "shopware"
+  },
+  "endpoints": [
+    {
+      "name": "store_api_product_list",
+      "family": "storeapi",
+      "method": "POST",
+      "path": "/store-api/product",
+      "body": {
+        "limit": 25
+      }
+    },
+    {
+      "name": "admin_api_product_search",
+      "family": "adminapi",
+      "method": "POST",
+      "path": "/api/search/product",
+      "auth": "bearer",
+      "body": {
+        "limit": 25,
+        "term": "product"
+      }
+    }
+  ]
+}
