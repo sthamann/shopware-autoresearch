@@ -1,13 +1,21 @@
 # AutoresearchPerf
 
-Shopware plugin for autoresearch wave-1 performance optimizations.
+Shopware plugin for autoresearch performance optimizations (Waves 1–3).
 
 ## Changes
 
 - **ProductListRouteOptimizer** — trims heavy default associations and sets
-  lightweight includes for bare `POST /store-api/product` requests (association
-  trim + pagination payload optimization).
-- **ProductListingCriteriaSubscriber** — drops facet aggregations on default
-  category listing requests to reduce OpenSearch load at 100k+ products.
+  lightweight includes for bare `POST /store-api/product` requests.
+- **ProductListingCriteriaSubscriber** — drops facet aggregations and default
+  listing associations on category navigation requests at 100k+ scale.
+- **ProductListingFilterTrimSubscriber** — clears filter handlers on default
+  listing requests so AggregationListingProcessor skips facet work.
+- **HomeListingRequestSubscriber** — sets `no-aggregations` and disables
+  listing filters early on home/CMS navigation routes (root listing layout).
+- **AdminProductSearchCriteriaSubscriber** — strips aggregations and heavy
+  associations on admin CRUD product search with term at 100k scale.
 
 Mounted via `compose.override.yaml` into `custom/plugins/AutoresearchPerf`.
+
+**Note:** `services.xml` must live at `src/Resources/config/services.xml`
+(Shopware bundle path = plugin `src/` directory).

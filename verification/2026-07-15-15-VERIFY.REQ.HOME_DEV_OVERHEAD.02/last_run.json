@@ -1,0 +1,47 @@
+{
+  "claim_id": "VERIFY.REQ.HOME_DEV_OVERHEAD.02",
+  "ts": "2026-07-15T13:36:22+02:00",
+  "verdict": "fail",
+  "gates": {
+    "bench_ran": true,
+    "home_p95_bounded": false,
+    "category_p95_healthy": true,
+    "home_not_10x_category": false
+  },
+  "metrics": {
+    "home_p95_ms": 3198.86,
+    "category_p95_ms": 226.33,
+    "home_to_category_ratio": 14.13,
+    "wave2_home_p95_ms": 3086.92,
+    "home_delta_ms": 111.94,
+    "home_threshold_ms": 500.0,
+    "profile": {
+      "home_ms": 3159.24,
+      "category_ms": 184.45,
+      "esi_header_ms": 142.29,
+      "esi_footer_ms": 121.26,
+      "root_listing_api_ms": 1568.91,
+      "listing_error": null,
+      "home_cms_note": "Default listing layout \u2014 product-listing at root nav (100k)",
+      "category_cms_note": "Contact form layout \u2014 no product listing element",
+      "home_to_category_ratio": 17.13
+    },
+    "by_request": {
+      "home": {
+        "p50_ms": 3154.94,
+        "p95_ms": 3198.86,
+        "request_count": 20
+      },
+      "category": {
+        "p50_ms": 188.75,
+        "p95_ms": 226.33,
+        "request_count": 20
+      },
+      "product_search": {
+        "p50_ms": 248.02,
+        "p95_ms": 257.19,
+        "request_count": 20
+      }
+    }
+  }
+}

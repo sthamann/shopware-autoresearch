@@ -1,0 +1,32 @@
+{
+  "claim_id": "VERIFY.REQ.HOME_LISTING_PROFILE.03",
+  "ts": "2026-07-15T13:34:24+02:00",
+  "verdict": "pass",
+  "gates": {
+    "profile_ran": true,
+    "at_least_three_buckets": true,
+    "home_slower_than_category": true,
+    "root_listing_measured": true
+  },
+  "metrics": {
+    "buckets": {
+      "home_ms": 3133.25,
+      "category_ms": 182.82,
+      "esi_header_ms": 141.56,
+      "esi_footer_ms": 118.49,
+      "root_listing_api_ms": 1577.49
+    },
+    "profile": {
+      "home_ms": 3133.25,
+      "category_ms": 182.82,
+      "esi_header_ms": 141.56,
+      "esi_footer_ms": 118.49,
+      "root_listing_api_ms": 1577.49,
+      "listing_error": null,
+      "home_cms_note": "Default listing layout \u2014 product-listing at root nav (100k)",
+      "category_cms_note": "Contact form layout \u2014 no product listing element",
+      "home_to_category_ratio": 17.14
+    },
+    "bucket_count": 5
+  }
+}

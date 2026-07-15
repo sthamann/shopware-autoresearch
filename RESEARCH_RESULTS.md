@@ -112,6 +112,63 @@
 
 ---
 
+## Wave 3 — 2026-07-15
+
+### Summary table
+
+| Claim | Strand | Status | Target | Measured | Notes |
+|---|---|---|---:|---:|---|
+| VERIFY.REQ.HOME_LISTING_PROFILE.03 | Request | **Verified** | ≥3 profile buckets | 5 buckets | Root cause: listing layout CMS at 100k |
+| VERIFY.REQ.HOME_DEV_OVERHEAD.02 | Request | **Failed** | home ≤ 500 ms | **3199 ms** | Wave 2: 3087 ms — no material gain |
+| VERIFY.REQ.CATEGORY_HTTP_CACHE.01 | Request | **Failed** | p95 ≤ 120 ms + cache hit | 203 ms, no hit | Session cookie blocks Symfony cache |
+| VERIFY.SCALE.ADMIN_SEARCH_CRITERIA_TRIM.01 | Scale | **Failed** | admin ≤ 260 ms | **316 ms** | Criteria trim marginal (+9 ms vs Wave 2) |
+
+**Wave 3 score:** 1 Verified, 3 Failed
+
+### Key findings (profiled)
+
+| Route / bucket | p50 ms | Role |
+|---|---:|---|
+| Home `/` | ~3155 | Default **listing layout** CMS + root nav product-listing |
+| Category bench CMS | ~185 | Contact-form layout — **no listing element** |
+| ESI header + footer | ~260 combined | Not the bottleneck |
+| Root listing Store API (`no-aggregations`) | ~1570 | ES + hydration floor at 100k |
+
+**Root cause (not Vite/session):** Home uses CMS page `Default listing layout` with a `product-listing` element scoped to root navigation (100k products). Category bench URL is a different CMS page without listing. Home ≈ listing API (~1.6 s) + CMS/Twig/render (~1.5 s).
+
+**Critical fix:** `AutoresearchPerf` services were not loading — `services.xml` was at `Resources/config/` but Shopware bundle path is `src/`. Moved to `src/Resources/config/services.xml`; subscribers now register. Wave 1 aggregation trim was effectively inactive until this wave.
+
+### Implementations
+
+- Fixed plugin DI path; added `ProductListingRouteOptimizer`, `HomeListingRequestSubscriber`, `ProductListingFilterTrimSubscriber`, `AdminProductSearchCriteriaSubscriber`
+- `scripts/profile-home.sh` — JSON breakdown for home vs category vs root listing API
+
+### Honest negatives (Wave 3)
+
+| Claim | Root cause |
+|---|---|
+| VERIFY.REQ.HOME_DEV_OVERHEAD.02 | ~1.6 s listing floor at 100k + ~1.5 s render; sub-500 ms needs deferred/lazy listing or non-listing home CMS |
+| VERIFY.REQ.CATEGORY_HTTP_CACHE.01 | `Set-Cookie: session-=` rotates each request → `X-Symfony-Cache` never hits |
+| VERIFY.SCALE.ADMIN_SEARCH_CRITERIA_TRIM.01 | Admin search ~316 ms stable; DAL/ES criteria trim insufficient for 260 ms gate |
+
+### Follow-up queue (auto-generated)
+
+| Claim ID | Depends on | Hypothesis |
+|---|---|---|
+| VERIFY.REQ.HOME_LISTING_DEFER.04 | HOME_DEV_OVERHEAD.02 fail | Defer home product-listing via ESI/widget async load |
+| VERIFY.REQ.SESSION_CACHE_BYPASS.04 | CATEGORY_HTTP_CACHE fail | Anonymous storefront GET without session cookie for cacheable pages |
+| VERIFY.SCALE.ADMIN_SEARCH_ES_SOURCE.03 | ADMIN_SEARCH_CRITERIA_TRIM fail | OpenSearch `_source` includes only admin grid columns |
+| VERIFY.SCALE.HOME_CMS_LAYOUT.04 | HOME profile | Swap home CMS to non-listing layout for Strang 1 bench representativeness |
+
+### Wave 4 recommendations
+
+1. Deferred home listing (ESI widget) — only path to sub-500 ms home without removing 100k corpus
+2. Re-benchmark Wave 1 `VERIFY.SCALE.STOREFRONT_LISTING_P95.01` on a **true** listing CMS page
+3. Admin search: ES `_source` projection or dedicated admin search index shape
+4. Store API: remain parked unless ES list route quick win emerges
+
+---
+
 ## Artifacts
 
 | Path | Purpose |

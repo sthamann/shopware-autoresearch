@@ -32,5 +32,6 @@ class ProductListingCriteriaSubscriber implements EventSubscriberInterface
 
         // Drop facet aggregations on default navigation listing — major ES cost at 100k+.
         $criteria->resetAggregations();
+        $criteria->resetAssociations();
     }
 }

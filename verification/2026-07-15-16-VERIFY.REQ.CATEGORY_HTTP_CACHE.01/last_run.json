@@ -1,0 +1,17 @@
+{
+  "claim_id": "VERIFY.REQ.CATEGORY_HTTP_CACHE.01",
+  "ts": "2026-07-15T13:34:38+02:00",
+  "verdict": "fail",
+  "gates": {
+    "samples_collected": true,
+    "category_p95_cached": false,
+    "http_cache_hit_with_session_jar": false
+  },
+  "metrics": {
+    "p95_ms": 202.54,
+    "threshold_ms": 120.0,
+    "cache_hit": false,
+    "request_count": 25,
+    "category_path": "/page/cms/019f64c64f7971f09730538de8dd1f67"
+  }
+}
