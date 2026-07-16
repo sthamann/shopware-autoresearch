@@ -19,3 +19,7 @@ extensions/*/node_modules/
 # IDE
 .idea/
 *.swp
+
+# Docs build tooling / intermediates (PDF + images are committed)
+docs/.venv/
+docs/RESEARCH_RESULTS.build.html

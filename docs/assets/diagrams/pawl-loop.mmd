@@ -1,0 +1,18 @@
+flowchart LR
+    A["memory.py query<br/>Duplikate?"] --> B["register.py<br/>CSV-Zeile: Planned"]
+    B --> C["init_folder.py<br/>Claim-Ordner"]
+    C --> D["Gates einfrieren<br/>in run.py (a priori)"]
+    D --> E["Implementieren<br/>extensions/ , config"]
+    E --> F["tools/run.py<br/>offizieller Gate-Lauf"]
+    F --> G{"Verdict?"}
+    G -->|exit 0| H["VERIFIED"]
+    G -->|exit 1| I["FAILED<br/>honest negative"]
+    I --> J["Follow-up Claims<br/>register.py"]
+    J -.-> B
+
+    classDef ok fill:#17B26A,stroke:#0E8A50,color:#fff;
+    classDef bad fill:#F04438,stroke:#B42318,color:#fff;
+    classDef step fill:#EAF4FF,stroke:#189EFF,color:#12233A;
+    class H ok;
+    class I,J bad;
+    class A,B,C,D,E,F step;

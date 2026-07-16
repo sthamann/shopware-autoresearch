@@ -1,0 +1,28 @@
+flowchart TD
+    ROOT["Shopware Autoresearch<br/>33 Claims"]
+
+    ROOT --> S1["Strang 1 · Request<br/>4 ✓ / 8 ✗ / 2 ○"]
+    ROOT --> S2["Strang 2 · API<br/>1 ✓ / 3 ✗"]
+    ROOT --> S3["Strang 3 · Scale<br/>6 ✓ / 6 ✗ / 1 ○"]
+    ROOT --> INF["Infra<br/>1 ✓"]
+
+    S1 --> S1A["Home deferred · 199 ms ✓"]
+    S1 --> S1B["Widget async · 1620 ms ✓"]
+    S1 --> S1C["HTTP-Cache · blockiert ✗"]
+
+    S3 --> S3A["Category Listing · 184 ms ✓"]
+    S3 --> S3B["Listing-CMS deferred · 200 ms ✓"]
+    S3 --> S3C["Admin Grid query-only · 71 ms ✓"]
+    S3 --> S3D["Admin Search std · ~316 ms ✗"]
+
+    S2 --> S2A["Store API List · 96 ms ✓"]
+    S2 --> S2B["Association/Field Trim · ~109 ms ✗"]
+
+    classDef ok fill:#17B26A,stroke:#0E8A50,color:#fff;
+    classDef bad fill:#F04438,stroke:#B42318,color:#fff;
+    classDef strand fill:#EAF4FF,stroke:#189EFF,color:#12233A;
+    classDef root fill:#12233A,stroke:#12233A,color:#fff;
+    class ROOT root;
+    class S1,S2,S3,INF strand;
+    class S1A,S1B,S3A,S3B,S3C,S2A ok;
+    class S1C,S3D,S2B bad;
