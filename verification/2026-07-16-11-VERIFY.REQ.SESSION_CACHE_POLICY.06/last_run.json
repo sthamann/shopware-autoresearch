@@ -1,0 +1,22 @@
+{
+  "claim_id": "VERIFY.REQ.SESSION_CACHE_POLICY.06",
+  "ts": "2026-07-16T09:05:40+02:00",
+  "verdict": "fail",
+  "gates": {
+    "samples_collected": true,
+    "anonymous_no_session_cookie": false,
+    "category_p95_cached": false,
+    "http_cache_hit_with_context_token": false,
+    "cache_policy_marker_present": false
+  },
+  "metrics": {
+    "p95_ms": 186.39,
+    "threshold_ms": 120.0,
+    "cache_hit": false,
+    "session_cookie_set": true,
+    "cache_policy_marker": false,
+    "context_token_header": "autoresearch-anonymous-cache-token",
+    "request_count": 25,
+    "category_path": "/page/cms/019f64c64f7971f09730538de8dd1f67"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "claim_id": "VERIFY.SCALE.ADMIN_SEARCH_ES_INDEX.06",
+  "ts": "2026-07-16T09:05:01+02:00",
+  "verdict": "pass",
+  "gates": {
+    "corpus_at_least_100k": true,
+    "grid_endpoint_responds": true,
+    "grid_query_only_path": true,
+    "admin_grid_search_p95": true,
+    "improved_vs_wave5": true
+  },
+  "metrics": {
+    "p95_ms": 71.26,
+    "p50_ms": 66.11,
+    "wave5_baseline_ms": 316.0,
+    "delta_ms": -244.74,
+    "threshold_ms": 260.0,
+    "product_count": 100000,
+    "grid_total": 25,
+    "grid_rows": 25,
+    "grid_path": "/api/_action/autoresearch/admin-product-grid-search",
+    "errors": []
+  }
+}

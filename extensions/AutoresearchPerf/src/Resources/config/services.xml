@@ -39,7 +39,12 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service id="AutoresearchPerf\StoreApi\StatelessStorefrontSessionSubscriber">
+        <service id="AutoresearchPerf\StoreApi\SessionCachePolicySubscriber">
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="AutoresearchPerf\StoreApi\WidgetListingTrimSubscriber">
+            <argument type="service" id="request_stack"/>
             <tag name="kernel.event_subscriber"/>
         </service>
 
@@ -64,6 +69,18 @@
                  decorates="Shopware\Core\Framework\DataAbstractionLayer\Read\EntityReaderInterface">
             <argument type="service" id="AutoresearchPerf\Admin\AdminProductEntityReaderDecorator.inner"/>
             <argument type="service" id="AutoresearchPerf\Admin\AdminProductEsSourceRegistry"/>
+        </service>
+
+        <service id="AutoresearchPerf\Admin\AdminProductGridSearchService">
+            <argument type="service" id="OpenSearch\Client"/>
+            <argument type="service" id="Shopware\Elasticsearch\Framework\ElasticsearchHelper"/>
+            <argument type="service" id="Shopware\Core\Content\Product\ProductDefinition"/>
+            <argument type="service" id="Doctrine\DBAL\Connection"/>
+        </service>
+
+        <service id="AutoresearchPerf\Admin\AdminProductGridSearchController">
+            <argument type="service" id="AutoresearchPerf\Admin\AdminProductGridSearchService"/>
+            <tag name="controller.service_arguments"/>
         </service>
     </services>
 </container>

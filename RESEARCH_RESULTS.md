@@ -1,7 +1,7 @@
 # Shopware Autoresearch — Forschungsergebnisse
 
 > **Stand:** 2026-07-16 · Ground Truth: [`verification/registry.csv`](verification/registry.csv)  
-> **Letzte abgeschlossene Welle:** Wave 5 · **Wave 6:** in Arbeit (3 Claims `Planned`)
+> **Letzte abgeschlossene Welle:** Wave 6 · **Wave 7:** 3 Follow-ups `Planned`
 
 ---
 
@@ -52,7 +52,7 @@ Quelle: [`docs/big-picture.md`](docs/big-picture.md)
 
 **Claim-Familien:** `REQ`, `HTTP`, `TTFB`, `PIPELINE`, `CACHE`
 
-**Aktueller Stand (100k):** Home **199 ms** (deferred), Category **186 ms**, Widget **1620 ms** (async), HTTP-Cache **blockiert** (Session-Cookie).
+**Aktueller Stand (100k):** Home **199 ms** (deferred), Category **186 ms**, Widget **1598 ms** (async), Admin Grid **71 ms** (query-only), HTTP-Cache **blockiert** (Session-Cookie).
 
 ---
 
@@ -88,7 +88,7 @@ Quelle: [`docs/big-picture.md`](docs/big-picture.md)
 
 **Claim-Familien:** `SCALE`, `CATALOG`, `ADMIN`, `STORE`, `SEARCH`, `INDEX`
 
-**Aktueller Stand (100k):** Category Listing **184–186 ms**, True Listing CMS (deferred) **200 ms**, Admin Search **~303–316 ms** (Floor).
+**Aktueller Stand (100k):** Category Listing **184–186 ms**, True Listing CMS (deferred) **200 ms**, Admin Search (standard) **~316 ms**, Admin Grid (query-only) **71 ms**.
 
 ---
 
@@ -98,21 +98,21 @@ Quelle: [`docs/big-picture.md`](docs/big-picture.md)
 
 | Kennzahl | Wert |
 |---|---:|
-| Claims gesamt | **30** |
-| Verified | **11** |
-| Failed (honest negatives) | **16** |
-| Planned (Wave 6) | **3** |
-| Abgeschlossene Wellen | **5** (+ Bootstrap) |
-| Wave 6 Status | **in Arbeit** |
+| Claims gesamt | **33** |
+| Verified | **12** |
+| Failed (honest negatives) | **18** |
+| Planned (Wave 7) | **3** |
+| Abgeschlossene Wellen | **6** (+ Bootstrap) |
+| Wave 6 Ergebnis | **1 Verified, 2 Failed** |
 
 ### Performance-Landschaft (p95 @ 100k, autoritative Messungen)
 
 ```mermaid
 xychart-beta
     title "p95 Latenz (ms) — autoritative Messungen @ 100k"
-    x-axis ["Home defer", "Listing CMS defer", "Category", "Widget async", "Admin Search", "Store API"]
-    y-axis "ms" 0 --> 3500
-    bar [199, 200, 186, 1620, 316, 97]
+    x-axis ["Home defer", "Listing CMS defer", "Category", "Widget async", "Admin Grid", "Admin Search std"]
+    y-axis "ms" 0 --> 1700
+    bar [199, 200, 186, 1598, 71, 316]
 ```
 
 | Metrik | Vorher (Wave) | Nachher | Delta | Claim |
@@ -120,8 +120,9 @@ xychart-beta
 | Home `/` p95 | 3199 ms (W3) | **199 ms** | −3000 ms | `HOME_LISTING_DEFER.04` |
 | True Listing CMS p95 | 1681 ms (W4) | **200 ms** | −1481 ms | `TRUE_LISTING_CMS_DEFER.05` |
 | Category Listing p95 | — | **184–186 ms** | — | `STOREFRONT_LISTING_P95.01` |
-| Widget async p95 | n/a | **1620 ms** (24 Produkte) | — | `HOME_LISTING_WIDGET_UX.05` |
-| Admin Search p95 | ~301 ms (W1) | **303–316 ms** | Floor | mehrere Failed |
+| Widget async p95 | 1620 ms (W5) | **1598 ms** | −22 ms | `HOME_LISTING_WIDGET_TIGHT.06` Failed |
+| Admin Grid p95 | 316 ms (W5 std) | **71 ms** | −245 ms | `ADMIN_SEARCH_ES_INDEX.06` |
+| Admin Search std p95 | ~301 ms (W1) | **316 ms** | Floor | mehrere Failed |
 | Store API p95 | — | **96 ms** | — | `STOREAPI.PRODUCT_LIST_P95.01` |
 
 ### Wellen-Fortschritt
@@ -144,7 +145,10 @@ timeline
     section Wave 5
         2026-07-16 : CMS-Defer 200 ms + Widget UX Verified
     section Wave 6
-        2026-07-16 : Admin ES-Index / Session-Policy / Widget-Tight Planned
+        2026-07-16 : Admin Grid 71 ms Verified
+                   : Widget 1598 ms / Session cache Failed
+    section Wave 7
+        2026-07-16 : Grid wire / CACHE_REWORK / Widget-only Planned
 ```
 
 ### Ergebnis pro Welle
@@ -157,7 +161,7 @@ timeline
 | 3 | 1 | 3 | Home-Bottleneck = Listing-CMS @ 100k |
 | 4 | 3 | 2 | Deferred Listing löst Home-Problem |
 | 5 | 2 | 2 | CMS-Defer + Widget-UX funktionieren |
-| 6 | — | — | **in Arbeit** (3 Planned) |
+| 6 | 1 | 2 | Admin Grid query-only 71 ms; Widget/Session Floor |
 
 ---
 
@@ -172,15 +176,17 @@ timeline
 | **CMS-Defer Extension** | True Listing CMS 1681 → 200 ms | Defer auf `frontend.cms.page.full` erweitert |
 | **DI-Fix** | Aggregation Trim tatsächlich aktiv | `services.xml` nach `src/Resources/config/` verschoben (Wave 3) |
 | **Widget UX** | 24 Produkte in 1620 ms async | Client-Script fetcht `/widgets/cms/navigation/{navId}` |
+| **Admin Grid Search** | Admin Grid **71 ms** @ 100k | Query-only endpoint `/api/_action/autoresearch/admin-product-grid-search` (DBAL) |
 | **Home Profiling** | 5 Timing-Buckets dokumentiert | `scripts/profile-home.sh` — Listing-CMS als Root Cause |
 
 ### Performance-Floors (honest negatives — nicht weiter ohne Architektur-Änderung)
 
 | Bottleneck | Gemessener Floor | Versuchte Ansätze | Fehlende Fähigkeit |
 |---|---:|---|---|
-| Admin Search @ 100k | **303–316 ms** | ES-Heap, Index-Warm, `_source`-Trim, DAL-Bypass | Dediziertes Admin-Grid-Search-API oder ES-Index-Mapping |
+| Admin Search @ 100k (standard) | **303–316 ms** | ES-Heap, Index-Warm, `_source`-Trim, DAL-Bypass | Query-only grid endpoint (Verified at 71 ms on separate route) |
+| Widget async @ 100k | **~1600 ms** | Aggregation trim on widget route (−22 ms) | Listing-only partial route bypassing full CMS render |
 | Store API @ Demo | **104–110 ms** | Association-Trim, Field-Projection | ES-backed List Route oder explizite Preis-Snapshots |
-| HTTP-Cache Storefront | **kein Cache-Hit** | Warmup, TTL, Anonymous-Bypass, Stateless-Routes | Session-Cookie-Policy ohne `session-` auf cacheable GETs |
+| HTTP-Cache Storefront | **kein Cache-Hit** | Warmup, TTL, Anonymous-Bypass, Stateless, Cache-Policy | Framework CACHE_REWORK oder Session-Factory vor StorefrontSubscriber |
 | Home (vor Defer) | **~3200 ms** | HTTP-Cache, OpCache, CMS-Trim | Synchrones Listing auf 100k-Produkt-Root-Navigation |
 
 ### Architektur-Entscheidung: Deferred Listing
@@ -222,9 +228,12 @@ Das größte Verified-Ergebnis über alle Wellen: **Deferred Product Listing**. 
 | `VERIFY.SCALE.ADMIN_SEARCH_DAL_BYPASS.05` | 3 | **Failed** | 316 ms | ≤ 260 ms | 5 | DAL nicht dominant |
 | `VERIFY.REQ.SESSION_STATELESS_STOREFRONT.05` | 1 | **Failed** | 201 ms, kein Hit | Cache-Hit | 5 | `_stateless` bricht Dev |
 | `VERIFY.REQ.HOME_LISTING_WIDGET_UX.05` | 1 | **Verified** | **1620 ms**, 24 Produkte | ≤ 3000 ms | 5 | Async Widget funktioniert |
-| `VERIFY.SCALE.ADMIN_SEARCH_ES_INDEX.06` | 3 | **Planned** | — | ≤ 260 ms | 6 | Dediziertes Grid-API |
-| `VERIFY.REQ.SESSION_CACHE_POLICY.06` | 1 | **Planned** | — | Cache-Hit | 6 | Context-Token ohne Cookie |
-| `VERIFY.REQ.HOME_LISTING_WIDGET_TIGHT.06` | 1 | **Planned** | — | ≤ 1000 ms | 6 | ES-Trim auf Widget-Route |
+| `VERIFY.SCALE.ADMIN_SEARCH_ES_INDEX.06` | 3 | **Verified** | **71 ms** | ≤ 260 ms | 6 | Query-only grid endpoint (DBAL) |
+| `VERIFY.REQ.SESSION_CACHE_POLICY.06` | 1 | **Failed** | 186 ms, kein Hit | Cache-Hit | 6 | session- weiterhin gesetzt |
+| `VERIFY.REQ.HOME_LISTING_WIDGET_TIGHT.06` | 1 | **Failed** | **1598 ms**, 24 Produkte | ≤ 1000 ms | 6 | Full CMS render dominiert |
+| `VERIFY.SCALE.ADMIN_GRID_WIRE.07` | 3 | **Planned** | — | ≤ 100 ms | 7 | Grid in Standard-Admin-Pfad |
+| `VERIFY.REQ.SESSION_CACHE_V68.07` | 1 | **Planned** | — | Cache-Hit | 7 | CACHE_REWORK Policies |
+| `VERIFY.REQ.WIDGET_LISTING_ONLY.07` | 1 | **Planned** | — | ≤ 1000 ms | 7 | Listing-only Widget-Partial |
 
 ---
 
@@ -236,7 +245,7 @@ Das größte Verified-Ergebnis über alle Wellen: **Deferred Product Listing**. 
 flowchart TD
     subgraph S1["Strang 1 — Request-Performance"]
         S1V["Verified (4)"]
-        S1F["Failed (7)"]
+        S1F["Failed (8)"]
         S1P["Planned (2)"]
         S1V --> R1["STOREFRONT_HOME_P95 · 207 ms"]
         S1V --> R2["HOME_LISTING_PROFILE · Profiling"]
@@ -248,8 +257,10 @@ flowchart TD
         S1F --> RF4["CATEGORY_HTTP_CACHE · kein Hit"]
         S1F --> RF5["SESSION_CACHE_BYPASS · kein Hit"]
         S1F --> RF6["SESSION_STATELESS · kein Hit"]
-        S1P --> RP1["SESSION_CACHE_POLICY.06"]
-        S1P --> RP2["HOME_LISTING_WIDGET_TIGHT.06"]
+        S1F --> RF7["SESSION_CACHE_POLICY · kein Hit"]
+        S1F --> RF8["WIDGET_TIGHT · 1598 ms"]
+        S1P --> RP1["SESSION_CACHE_V68.07"]
+        S1P --> RP2["WIDGET_LISTING_ONLY.07"]
     end
 
     subgraph S2["Strang 2 — API-Performance"]
@@ -262,7 +273,7 @@ flowchart TD
     end
 
     subgraph S3["Strang 3 — Katalog-Skalierung"]
-        S3V["Verified (5)"]
+        S3V["Verified (6)"]
         S3F["Failed (6)"]
         S3P["Planned (1)"]
         S3V --> C1["ADMIN_PRODUCT_SEARCH · 301 ms"]
@@ -270,13 +281,14 @@ flowchart TD
         S3V --> C3["TRUE_LISTING_CMS · 1681 ms"]
         S3V --> C4["LISTING_REBENCH · 186 ms"]
         S3V --> C5["TRUE_LISTING_CMS_DEFER · 200 ms"]
+        S3V --> C6["ADMIN_GRID_SEARCH · 71 ms"]
         S3F --> CF1["ES_TUNING · 308 ms"]
         S3F --> CF2["INDEX_WARM · 307 ms"]
         S3F --> CF3["LISTING_TIGHT · 177 ms"]
         S3F --> CF4["CRITERIA_TRIM · 316 ms"]
         S3F --> CF5["ES_SOURCE · 303 ms"]
         S3F --> CF6["DAL_BYPASS · 316 ms"]
-        S3P --> CP1["ADMIN_SEARCH_ES_INDEX.06"]
+        S3P --> CP1["ADMIN_GRID_WIRE.07"]
     end
 
     subgraph INF["Infrastructure"]
@@ -294,6 +306,7 @@ flowchart LR
     W4D --> W5W["W5: WIDGET_UX<br/>1620 ms ✓"]
     W1 --> W4T["W4: TRUE_CMS<br/>1681 ms ✓"]
     W4T --> W5D["W5: CMS_DEFER<br/>200 ms ✓"]
+    W5D --> W6G["W6: ADMIN_GRID<br/>71 ms ✓"]
 
     W1 --> W1F["W1: HTTP_CACHE ✗"]
     W1F --> W2H["W2: HOME_OVERHEAD ✗"]
@@ -303,11 +316,17 @@ flowchart LR
     W1F --> W3C["W3: CATEGORY_CACHE ✗"]
     W3C --> W4S["W4: SESSION_BYPASS ✗"]
     W4S --> W5S["W5: STATELESS ✗"]
-    W5S --> W6S["W6: CACHE_POLICY ○"]
+    W4S --> W5S["W5: STATELESS ✗"]
+    W5S --> W6S["W6: CACHE_POLICY ✗"]
+    W6S --> W7S["W7: CACHE_V68 ○"]
+
+    W5W --> W6W["W6: WIDGET_TIGHT ✗"]
+    W6W --> W7W["W7: LISTING_ONLY ○"]
 
     style W4D fill:#2d6,#fff
     style W5D fill:#2d6,#fff
     style W5W fill:#2d6,#fff
+    style W6G fill:#2d6,#fff
     style W1 fill:#2d6,#fff
     style W3 fill:#2d6,#fff
     style W4T fill:#2d6,#fff
@@ -317,7 +336,10 @@ flowchart LR
     style W3C fill:#d62,#fff
     style W4S fill:#d62,#fff
     style W5S fill:#d62,#fff
-    style W6S fill:#fa0,#fff
+    style W6S fill:#d62,#fff
+    style W6W fill:#d62,#fff
+    style W7S fill:#fa0,#fff
+    style W7W fill:#fa0,#fff
 ```
 
 Legende: ✓ = Verified · ✗ = Failed · ○ = Planned
@@ -414,17 +436,28 @@ Vier Starter-Claims: Docker-Stack, Storefront-Home (Demo), Store API Product Lis
 
 **Implementierung:** Defer auf `frontend.cms.page.full` erweitert; `AdminProductEntityReaderDecorator`; Widget-Script für `/widgets/cms/navigation/`.
 
-### Wave 6 — 2026-07-16 · in Arbeit
+### Wave 6 — 2026-07-16 · 1 Verified, 2 Failed
 
-Drei Claims registriert (`Planned`):
+**Verified:**
+- `ADMIN_SEARCH_ES_INDEX.06` — Query-only grid endpoint **71 ms** p95 @ 100k (Wave 5 standard path: 316 ms)
 
-| Claim | Hypothese | Ziel |
+**Failed:**
+- `SESSION_CACHE_POLICY.06` — Context-token header + cache policy; **186 ms**, no `X-Symfony-Cache` hit, `session-` still set
+- `HOME_LISTING_WIDGET_TIGHT.06` — Widget trim **1598 ms** p95 (gate ≤ 1000 ms; Wave 5: 1620 ms, −22 ms marginal)
+
+**Implementierung:**
+- `AdminProductGridSearchController` + `AdminProductGridSearchService` — DBAL query-only grid at `/api/_action/autoresearch/admin-product-grid-search`
+- `SessionCachePolicySubscriber` — fixed anonymous context token + response cookie strip
+- `WidgetListingTrimSubscriber` — aggregation/filter trim on `frontend.cms.navigation.page`
+- `HomeListingRequestSubscriber` extended for widget route
+
+### Follow-up queue (auto-generated → Wave 7)
+
+| Claim ID | Depends on | Hypothesis |
 |---|---|---|
-| `ADMIN_SEARCH_ES_INDEX.06` | Dediziertes Admin-Grid-Search-API / ES-Index-Mapping | Admin ≤ 260 ms |
-| `SESSION_CACHE_POLICY.06` | Cache-Policy + Context-Token-Header ohne `session-`-Cookie | HTTP-Cache-Hit |
-| `HOME_LISTING_WIDGET_TIGHT.06` | ES-Trim auf Widget-Route | Widget ≤ 1000 ms |
-
-Implementierungs-Artefakte angelegt (`AdminProductGridSearchController`, `SessionCachePolicySubscriber`, `WidgetListingTrimSubscriber`); offizielle Gate-Läufe stehen aus.
+| `ADMIN_GRID_WIRE.07` | ES_INDEX.06 verified | Wire grid endpoint into standard admin search path |
+| `SESSION_CACHE_V68.07` | CACHE_POLICY.06 fail | CACHE_REWORK cache policies for anonymous GET |
+| `WIDGET_LISTING_ONLY.07` | WIDGET_TIGHT.06 fail | Listing-only partial bypassing full CMS widget render |
 
 ---
 
@@ -441,4 +474,4 @@ Implementierungs-Artefakte angelegt (`AdminProductGridSearchController`, `Sessio
 
 ---
 
-*Zuletzt aktualisiert: 2026-07-16 — Wave 5 abgeschlossen, Wave 6 in Arbeit.*
+*Zuletzt aktualisiert: 2026-07-16 — Wave 6 abgeschlossen (1 Verified, 2 Failed).*

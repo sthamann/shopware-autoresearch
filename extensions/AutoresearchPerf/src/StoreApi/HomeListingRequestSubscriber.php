@@ -44,7 +44,7 @@ class HomeListingRequestSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (!\in_array($route, ['frontend.home.page', 'frontend.cms.page.full', 'frontend.navigation.page'], true)) {
+        if (!\in_array($route, ['frontend.home.page', 'frontend.cms.page.full', 'frontend.navigation.page', 'frontend.cms.navigation.page'], true)) {
             return;
         }
 
