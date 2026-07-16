@@ -1,0 +1,35 @@
+{
+  "claim_id": "VERIFY.REQ.HOME_LISTING_DEFER.04",
+  "ts": "2026-07-16T08:08:07+02:00",
+  "verdict": "pass",
+  "gates": {
+    "bench_ran": true,
+    "corpus_at_least_100k": true,
+    "home_p95_deferred": true,
+    "home_improved_vs_wave3": true
+  },
+  "metrics": {
+    "home_p95_ms": 198.8,
+    "wave3_home_p95_ms": 3199.0,
+    "delta_ms": -3000.2,
+    "threshold_ms": 500.0,
+    "product_count": 100000,
+    "by_request": {
+      "home": {
+        "p50_ms": 181.28,
+        "p95_ms": 198.8,
+        "request_count": 20
+      },
+      "category": {
+        "p50_ms": 180.13,
+        "p95_ms": 188.68,
+        "request_count": 20
+      },
+      "product_search": {
+        "p50_ms": 243.73,
+        "p95_ms": 266.75,
+        "request_count": 20
+      }
+    }
+  }
+}

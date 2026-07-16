@@ -1,0 +1,19 @@
+{
+  "claim_id": "VERIFY.REQ.SESSION_CACHE_BYPASS.04",
+  "ts": "2026-07-16T08:09:08+02:00",
+  "verdict": "fail",
+  "gates": {
+    "samples_collected": true,
+    "anonymous_no_session_cookie": false,
+    "category_p95_cached": false,
+    "http_cache_hit_cookieless": false
+  },
+  "metrics": {
+    "p95_ms": 180.83,
+    "threshold_ms": 120.0,
+    "cache_hit": false,
+    "session_cookie_set": true,
+    "request_count": 25,
+    "category_path": "/page/cms/019f64c64f7971f09730538de8dd1f67"
+  }
+}

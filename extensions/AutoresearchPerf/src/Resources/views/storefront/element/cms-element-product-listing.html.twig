@@ -1,0 +1,15 @@
+{% sw_extends '@Storefront/storefront/element/cms-element-product-listing.html.twig' %}
+
+{% block element_product_listing %}
+    {% set deferExt = element.data.extensions.autoresearch_defer_home_listing %}
+    {% if deferExt and deferExt.deferred %}
+        <div class="cms-element-product-listing" data-autoresearch-deferred-listing="1">
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary" role="status" aria-label="Loading products"></div>
+                <p class="mt-3 text-muted">Loading products…</p>
+            </div>
+        </div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}

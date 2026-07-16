@@ -1,0 +1,8 @@
+{
+    "name": "AutoresearchPerf",
+    "author": "Autoresearch",
+    "views": [
+        "@AutoresearchPerf",
+        "@Storefront"
+    ]
+}

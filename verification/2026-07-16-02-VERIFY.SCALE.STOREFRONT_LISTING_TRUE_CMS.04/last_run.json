@@ -1,0 +1,20 @@
+{
+  "claim_id": "VERIFY.SCALE.STOREFRONT_LISTING_TRUE_CMS.04",
+  "ts": "2026-07-16T08:08:53+02:00",
+  "verdict": "pass",
+  "gates": {
+    "corpus_at_least_100k": true,
+    "samples_collected": true,
+    "true_listing_cms_p95_within_threshold": true
+  },
+  "metrics": {
+    "p95_ms": 1680.74,
+    "p50_ms": 1650.71,
+    "threshold_ms": 2500.0,
+    "request_count": 20,
+    "product_count": 100000,
+    "listing_cms_path": "/page/cms/019f64c64cf77058b8bc452c37f90ca8",
+    "bench_category_path": "/page/cms/019f64c64f7971f09730538de8dd1f67",
+    "errors": []
+  }
+}

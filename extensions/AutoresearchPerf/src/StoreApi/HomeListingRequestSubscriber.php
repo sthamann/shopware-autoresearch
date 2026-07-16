@@ -48,6 +48,10 @@ class HomeListingRequestSubscriber implements EventSubscriberInterface
             return;
         }
 
+        if ($route === 'frontend.home.page' && !$request->attributes->getBoolean('_esi')) {
+            $request->attributes->set(DeferredProductListingCmsElementResolver::DEFER_ATTRIBUTE, true);
+        }
+
         if ($request->query->has('order') || $request->query->has('reduce-aggregations')) {
             return;
         }

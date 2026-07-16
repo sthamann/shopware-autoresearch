@@ -1,0 +1,19 @@
+{
+  "claim_id": "VERIFY.SCALE.ADMIN_SEARCH_ES_SOURCE.03",
+  "ts": "2026-07-16T08:09:01+02:00",
+  "verdict": "fail",
+  "gates": {
+    "bench_ran": true,
+    "corpus_at_least_100k": true,
+    "admin_search_p95_source_trimmed": false,
+    "improved_vs_wave3": true
+  },
+  "metrics": {
+    "p95_ms": 302.88,
+    "p50_ms": 296.98,
+    "wave3_baseline_ms": 316.0,
+    "delta_ms": -13.12,
+    "threshold_ms": 260.0,
+    "product_count": 100000
+  }
+}

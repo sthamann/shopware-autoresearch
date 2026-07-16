@@ -1,0 +1,22 @@
+{
+  "claim_id": "VERIFY.SCALE.STOREFRONT_LISTING_REBENCH.04",
+  "ts": "2026-07-16T08:09:20+02:00",
+  "verdict": "pass",
+  "gates": {
+    "corpus_at_least_100k": true,
+    "samples_collected": true,
+    "category_p95_after_di_fix": true,
+    "aggregation_trim_still_active": true
+  },
+  "metrics": {
+    "p95_ms": 186.21,
+    "p50_ms": 172.37,
+    "wave1_p95_ms": 184.0,
+    "threshold_ms": 200.0,
+    "request_count": 20,
+    "product_count": 100000,
+    "category_path": "/page/cms/019f64c64f7971f09730538de8dd1f67",
+    "note": "Bench category CMS has no product-listing element; confirms DI fix baseline",
+    "errors": []
+  }
+}

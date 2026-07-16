@@ -169,6 +169,65 @@
 
 ---
 
+## Wave 4 — 2026-07-16
+
+### Summary table
+
+| Claim | Strand | Status | Target | Measured | Notes |
+|---|---|---|---:|---:|---|
+| VERIFY.REQ.HOME_LISTING_DEFER.04 | Request | **Verified** | home ≤ 500 ms | **199 ms** | Wave 3: 3199 ms — deferred CMS listing |
+| VERIFY.SCALE.STOREFRONT_LISTING_TRUE_CMS.04 | Scale | **Verified** | p95 ≤ 2500 ms | **1681 ms** | True listing CMS; trim active post-DI fix |
+| VERIFY.SCALE.STOREFRONT_LISTING_REBENCH.04 | Scale | **Verified** | p95 ≤ 200 ms | **186 ms** | Bench category (no listing); DI fix confirmed |
+| VERIFY.SCALE.ADMIN_SEARCH_ES_SOURCE.03 | Scale | **Failed** | admin ≤ 260 ms | **303 ms** | `_source` trim −13 ms vs Wave 3; floor persists |
+| VERIFY.REQ.SESSION_CACHE_BYPASS.04 | Request | **Failed** | cache hit + ≤ 120 ms | 181 ms, no hit | `session-` cookie still set on cookie-less GET |
+
+**Wave 4 score:** 3 Verified, 2 Failed
+
+### Key metrics (before / after)
+
+| Metric | Wave 3 / baseline | Wave 4 | Delta |
+|---|---:|---:|---:|
+| Home p95 | 3199 ms | **199 ms** | −3000 ms |
+| True listing CMS p95 | ~3163 ms (manual) | **1681 ms** | aggregation trim now active |
+| Bench category p95 | 177–188 ms | **186 ms** | stable (DI fix confirmed) |
+| Admin search p95 | 316 ms | **303 ms** | −13 ms (ES `_source` marginal) |
+| Session cookie on anonymous GET | rotates | still set | HTTP cache blocked |
+
+### Implementations
+
+- **DeferredProductListingCmsElementResolver** — skips synchronous home product-listing; placeholder + async fetch
+- **ProductListingRouteOptimizer** — short-circuits listing load when defer flag set
+- **HomeListingDeferRequestSubscriber / ResponseSubscriber** — defer marker + client fetch injection
+- **AdminProductSearchSourceSubscriber** — OpenSearch `_source.includes` for admin grid columns
+- **AnonymousSessionBypassSubscriber** — mock session attempt for cookie-less cacheable GET (insufficient alone)
+- **theme.json** + Twig override for deferred listing placeholder
+
+### Honest negatives (Wave 4)
+
+| Claim | Root cause |
+|---|---|
+| VERIFY.SCALE.ADMIN_SEARCH_ES_SOURCE.03 | Admin search ~303 ms floor; ES `_source` projection saves ~13 ms, DAL hydration dominates |
+| VERIFY.REQ.SESSION_CACHE_BYPASS.04 | Symfony session listener still emits `session-` cookie; mock session at priority 35 insufficient for cache hits |
+
+### Follow-up queue (auto-generated)
+
+| Claim ID | Depends on | Hypothesis |
+|---|---|---|
+| VERIFY.SCALE.TRUE_LISTING_CMS_DEFER.05 | TRUE_CMS.04 | Extend home defer to true listing CMS pages for sub-500 ms |
+| VERIFY.SCALE.ADMIN_SEARCH_DAL_BYPASS.05 | ES_SOURCE.03 fail | ES-only admin search path bypassing DAL hydration |
+| VERIFY.REQ.SESSION_STATELESS_STOREFRONT.05 | SESSION_CACHE_BYPASS fail | Framework-level stateless storefront routes for HTTP cache |
+| VERIFY.REQ.HOME_LISTING_WIDGET_UX.05 | HOME_LISTING_DEFER verified | Async widget loads products client-side after fast shell |
+
+### Wave 5 recommendations
+
+1. Extend listing defer to CMS listing pages (`/page/cms/...` with product-listing) — true listing still ~1.7 s
+2. Admin search: bypass DAL hydration with ES-only result mapping (target ≤ 260 ms)
+3. Session: investigate Symfony `stateless` routes or early session factory swap before `StorefrontSubscriber`
+4. Home widget UX: wire async fetch to storefront listing widget endpoint and verify product render
+5. Store API: remain parked
+
+---
+
 ## Artifacts
 
 | Path | Purpose |

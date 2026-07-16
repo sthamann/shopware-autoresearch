@@ -13,6 +13,12 @@
             <argument type="service" id="AutoresearchPerf\StoreApi\ProductListingRouteOptimizer.inner"/>
         </service>
 
+        <service id="AutoresearchPerf\StoreApi\DeferredProductListingCmsElementResolver"
+                 decorates="Shopware\Core\Content\Product\Cms\ProductListingCmsElementResolver">
+            <argument type="service" id="AutoresearchPerf\StoreApi\DeferredProductListingCmsElementResolver.inner"/>
+            <tag name="shopware.cms.data_resolver"/>
+        </service>
+
         <service id="AutoresearchPerf\StoreApi\ProductListingCriteriaSubscriber">
             <tag name="kernel.event_subscriber"/>
         </service>
@@ -25,7 +31,23 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
+        <service id="AutoresearchPerf\StoreApi\HomeListingDeferRequestSubscriber">
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="AutoresearchPerf\StoreApi\HomeListingDeferResponseSubscriber">
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="AutoresearchPerf\StoreApi\AnonymousSessionBypassSubscriber">
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
         <service id="AutoresearchPerf\Admin\AdminProductSearchCriteriaSubscriber">
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="AutoresearchPerf\Admin\AdminProductSearchSourceSubscriber">
             <tag name="kernel.event_subscriber"/>
         </service>
     </services>
