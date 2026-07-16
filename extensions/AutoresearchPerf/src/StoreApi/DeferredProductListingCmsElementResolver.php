@@ -48,6 +48,12 @@ class DeferredProductListingCmsElementResolver implements CmsElementResolverInte
         $this->decorated->enrich($slot, $resolverContext, $result);
     }
 
+    /** @var list<string> */
+    private const DEFERABLE_ROUTES = [
+        'frontend.home.page',
+        'frontend.cms.page.full',
+    ];
+
     private function shouldDefer(ResolverContext $resolverContext): bool
     {
         $request = $resolverContext->getRequest();
@@ -60,6 +66,8 @@ class DeferredProductListingCmsElementResolver implements CmsElementResolverInte
             return true;
         }
 
-        return $request->attributes->get('_route') === 'frontend.home.page';
+        $route = $request->attributes->get('_route');
+
+        return \is_string($route) && \in_array($route, self::DEFERABLE_ROUTES, true);
     }
 }

@@ -1,0 +1,22 @@
+{
+  "claim_id": "VERIFY.REQ.HOME_LISTING_WIDGET_UX.05",
+  "ts": "2026-07-16T08:47:59+02:00",
+  "verdict": "pass",
+  "gates": {
+    "corpus_at_least_100k": true,
+    "home_has_deferred_marker": true,
+    "widget_samples_collected": true,
+    "widget_p95_within_threshold": true,
+    "widget_loads_min_products": true
+  },
+  "metrics": {
+    "widget_p95_ms": 1620.31,
+    "widget_p50_ms": 1583.9,
+    "threshold_ms": 3000.0,
+    "max_product_boxes": 24,
+    "min_products_required": 20,
+    "navigation_id": "019f64c64c9e7004a30aa4ddec45d52f",
+    "product_count": 100000,
+    "errors": []
+  }
+}

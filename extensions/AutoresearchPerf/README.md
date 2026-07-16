@@ -1,6 +1,6 @@
 # AutoresearchPerf
 
-Shopware plugin for autoresearch performance optimizations (Waves 1–4).
+Shopware plugin for autoresearch performance optimizations (Waves 1–5).
 
 ## Changes
 
@@ -14,12 +14,14 @@ Shopware plugin for autoresearch performance optimizations (Waves 1–4).
   listing filters early on home/CMS navigation routes (root listing layout).
 - **AdminProductSearchCriteriaSubscriber** — strips aggregations and heavy
   associations on admin CRUD product search with term at 100k scale.
-- **DeferredProductListingCmsElementResolver** — skips synchronous home
+- **DeferredProductListingCmsElementResolver** — skips synchronous home/CMS
   product-listing load; placeholder + async fetch.
-- **AnonymousSessionBypassSubscriber** — mock session attempt for cookie-less
-  cacheable GET (insufficient alone for HTTP cache hits).
+- **StatelessStorefrontSessionSubscriber** — `_stateless` + session reset for
+  anonymous cookie-less cacheable GET.
 - **AdminProductSearchSourceSubscriber** — OpenSearch `_source.includes` for
   admin grid columns on CRUD product search.
+- **AdminProductEntityReaderDecorator** — builds admin grid products from cached
+  ES `_source` on CRUD term search, bypassing DAL read.
 
 Mounted via `compose.override.yaml` into `custom/plugins/AutoresearchPerf`.
 

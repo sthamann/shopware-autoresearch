@@ -60,7 +60,19 @@ HTML;
 (function () {
   var host = document.querySelector('[data-autoresearch-deferred-listing="1"]');
   if (!host) { return; }
-  fetch('/widgets/cms/navigation/' + (window.activeNavigationId || '') + '/filter', { credentials: 'same-origin' })
+  var navId = window.activeNavigationId || '';
+  if (!navId) { return; }
+  fetch('/widgets/cms/navigation/' + navId, {
+    credentials: 'same-origin',
+    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+  })
+    .then(function (response) { return response.text(); })
+    .then(function (html) {
+      var doc = new DOMParser().parseFromString(html, 'text/html');
+      var listing = doc.querySelector('.cms-element-product-listing');
+      if (!listing) { return; }
+      host.replaceWith(listing);
+    })
     .catch(function () {});
 })();
 </script>

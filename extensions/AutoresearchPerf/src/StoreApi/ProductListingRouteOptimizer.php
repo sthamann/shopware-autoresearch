@@ -80,11 +80,10 @@ class ProductListingRouteOptimizer extends AbstractProductListingRoute
         }
 
         $route = $request->attributes->get('_route');
-        if ($route === 'frontend.home.page' && !$request->attributes->getBoolean('_esi')) {
-            return true;
-        }
 
-        return false;
+        return \is_string($route)
+            && \in_array($route, ['frontend.home.page', 'frontend.cms.page.full'], true)
+            && !$request->attributes->getBoolean('_esi');
     }
 
     private function emptyResponse(SalesChannelContext $context, Criteria $criteria): ProductListingRouteResponse

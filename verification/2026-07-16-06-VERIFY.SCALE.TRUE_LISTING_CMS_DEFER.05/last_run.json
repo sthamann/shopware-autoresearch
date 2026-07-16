@@ -1,0 +1,22 @@
+{
+  "claim_id": "VERIFY.SCALE.TRUE_LISTING_CMS_DEFER.05",
+  "ts": "2026-07-16T08:47:15+02:00",
+  "verdict": "pass",
+  "gates": {
+    "corpus_at_least_100k": true,
+    "samples_collected": true,
+    "true_listing_cms_deferred_p95": true,
+    "improved_vs_wave4": true
+  },
+  "metrics": {
+    "p95_ms": 199.97,
+    "p50_ms": 176.47,
+    "wave4_baseline_ms": 1681.0,
+    "delta_ms": -1481.03,
+    "threshold_ms": 500.0,
+    "request_count": 20,
+    "product_count": 100000,
+    "listing_cms_path": "/page/cms/019f64c64cf77058b8bc452c37f90ca8",
+    "errors": []
+  }
+}

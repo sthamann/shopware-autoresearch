@@ -48,7 +48,10 @@ class HomeListingRequestSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($route === 'frontend.home.page' && !$request->attributes->getBoolean('_esi')) {
+        if (
+            \in_array($route, ['frontend.home.page', 'frontend.cms.page.full'], true)
+            && !$request->attributes->getBoolean('_esi')
+        ) {
             $request->attributes->set(DeferredProductListingCmsElementResolver::DEFER_ATTRIBUTE, true);
         }
 

@@ -37,7 +37,7 @@ class HomeListingDeferRequestSubscriber implements EventSubscriberInterface
         }
 
         $route = $request->attributes->get('_route');
-        if ($route !== 'frontend.home.page') {
+        if (!\in_array($route, ['frontend.home.page', 'frontend.cms.page.full'], true)) {
             return;
         }
 

@@ -39,7 +39,7 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service id="AutoresearchPerf\StoreApi\AnonymousSessionBypassSubscriber">
+        <service id="AutoresearchPerf\StoreApi\StatelessStorefrontSessionSubscriber">
             <tag name="kernel.event_subscriber"/>
         </service>
 
@@ -49,6 +49,21 @@
 
         <service id="AutoresearchPerf\Admin\AdminProductSearchSourceSubscriber">
             <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="AutoresearchPerf\Admin\AdminProductEsSourceRegistry">
+            <argument type="service" id="request_stack"/>
+        </service>
+
+        <service id="AutoresearchPerf\Admin\AdminProductSearchDalBypassSubscriber">
+            <argument type="service" id="AutoresearchPerf\Admin\AdminProductEsSourceRegistry"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="AutoresearchPerf\Admin\AdminProductEntityReaderDecorator"
+                 decorates="Shopware\Core\Framework\DataAbstractionLayer\Read\EntityReaderInterface">
+            <argument type="service" id="AutoresearchPerf\Admin\AdminProductEntityReaderDecorator.inner"/>
+            <argument type="service" id="AutoresearchPerf\Admin\AdminProductEsSourceRegistry"/>
         </service>
     </services>
 </container>

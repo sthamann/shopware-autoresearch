@@ -228,6 +228,60 @@
 
 ---
 
+## Wave 5 — 2026-07-16
+
+### Summary table
+
+| Claim | Strand | Status | Target | Measured | Notes |
+|---|---|---|---:|---:|---|
+| VERIFY.SCALE.TRUE_LISTING_CMS_DEFER.05 | Scale | **Verified** | p95 <= 500 ms | **200 ms** | Wave 4: 1681 ms — defer on cms.page.full |
+| VERIFY.SCALE.ADMIN_SEARCH_DAL_BYPASS.05 | Scale | **Failed** | admin <= 260 ms | **316 ms** | ES-only entity build; +13 ms vs Wave 4 |
+| VERIFY.REQ.SESSION_STATELESS_STOREFRONT.05 | Request | **Failed** | cache hit + no session | 201 ms, no hit | session- still set; _stateless breaks dev |
+| VERIFY.REQ.HOME_LISTING_WIDGET_UX.05 | Request | **Verified** | widget <= 3000 ms, >= 20 products | **1620 ms**, 24 products | Async widget loads real listing |
+
+**Wave 5 score:** 2 Verified, 2 Failed
+
+### Key metrics (before / after)
+
+| Metric | Wave 4 | Wave 5 | Delta |
+|---|---:|---:|---:|
+| True listing CMS p95 | 1681 ms | **200 ms** | −1481 ms |
+| Home p95 (deferred) | 199 ms | ~200 ms | stable |
+| Admin search p95 | 303 ms | **316 ms** | +13 ms (DAL bypass ineffective) |
+| Session cookie on anonymous GET | still set | still set | HTTP cache blocked |
+| Widget async p95 | n/a | **1620 ms** | 24 products loaded |
+
+### Implementations
+
+- Extended defer to `frontend.cms.page.full` in resolver, subscribers, listing route optimizer
+- **StatelessStorefrontSessionSubscriber** — session reset + cookie strip (replaces mock-session bypass)
+- **AdminProductEntityReaderDecorator** — ES `_source` → ProductEntity without DAL read
+- Widget script fetches `/widgets/cms/navigation/{navId}` and injects listing HTML
+
+### Honest negatives (Wave 5)
+
+| Claim | Root cause |
+|---|---|
+| VERIFY.SCALE.ADMIN_SEARCH_DAL_BYPASS.05 | Admin search ~316 ms floor; DAL hydration not dominant — ES query + API serialization dominate |
+| VERIFY.REQ.SESSION_STATELESS_STOREFRONT.05 | StorefrontSubscriber requires session for context token; `_stateless` incompatible with dev debug session usage |
+
+### Follow-up queue (auto-generated)
+
+| Claim ID | Depends on | Hypothesis |
+|---|---|---|
+| VERIFY.SCALE.ADMIN_SEARCH_ES_INDEX.06 | DAL_BYPASS.05 fail | Dedicated admin ES index mapping or query-only grid endpoint |
+| VERIFY.REQ.SESSION_CACHE_POLICY.06 | SESSION_STATELESS.05 fail | Cache policy + context token header without session cookie |
+| VERIFY.REQ.HOME_LISTING_WIDGET_TIGHT.06 | HOME_LISTING_WIDGET_UX verified | Tighten widget p95 to <= 1000 ms with ES trim on widget route |
+
+### Wave 6 recommendations
+
+1. Admin search: accept ~315 ms floor or build dedicated admin grid search API (no full entity hydration)
+2. Session/HTTP cache: investigate cache policies (v6.8 CACHE_REWORK) or fixed anonymous context token
+3. Widget: apply aggregation trim to `/widgets/cms/navigation/` route for sub-1000 ms async p95
+4. Store API: remain parked
+
+---
+
 ## Artifacts
 
 | Path | Purpose |

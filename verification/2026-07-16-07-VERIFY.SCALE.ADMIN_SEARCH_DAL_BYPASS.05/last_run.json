@@ -1,0 +1,19 @@
+{
+  "claim_id": "VERIFY.SCALE.ADMIN_SEARCH_DAL_BYPASS.05",
+  "ts": "2026-07-16T08:47:23+02:00",
+  "verdict": "fail",
+  "gates": {
+    "bench_ran": true,
+    "corpus_at_least_100k": true,
+    "admin_search_p95_dal_bypass": false,
+    "improved_vs_wave4": false
+  },
+  "metrics": {
+    "p95_ms": 315.5,
+    "p50_ms": 304.18,
+    "wave4_baseline_ms": 303.0,
+    "delta_ms": 12.5,
+    "threshold_ms": 260.0,
+    "product_count": 100000
+  }
+}
