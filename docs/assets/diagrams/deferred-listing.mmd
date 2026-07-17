@@ -2,19 +2,19 @@ sequenceDiagram
     autonumber
     participant B as Browser
     participant S as Shopware Storefront
-    participant L as Produkt-Listing (100k)
+    participant L as Product listing (100k)
 
-    Note over B,L: VORHER — synchron (~3200 ms)
+    Note over B,L: BEFORE — synchronous (~3200 ms)
     B->>S: GET /
-    S->>L: Listing aller 100k Produkte laden
-    L-->>S: Ergebnis (~1600 ms) + Render (~1500 ms)
-    S-->>B: HTML komplett (~3200 ms)
+    S->>L: load listing of all 100k products
+    L-->>S: result (~1600 ms) + render (~1500 ms)
+    S-->>B: full HTML (~3200 ms)
 
-    Note over B,L: NACHHER — deferred (~200 ms Shell)
+    Note over B,L: AFTER — deferred (~200 ms shell)
     B->>S: GET /
-    S-->>B: HTML-Shell mit Platzhalter (~200 ms)
+    S-->>B: HTML shell with placeholder (~200 ms)
     B->>S: async GET /widgets/cms/navigation/{id}
-    S->>L: Listing laden
-    L-->>S: Ergebnis
-    S-->>B: Listing-HTML (~1600 ms, im Hintergrund)
-    Note over B: Seite sofort sichtbar,<br/>Produkte erscheinen nach
+    S->>L: load listing
+    L-->>S: result
+    S-->>B: listing HTML (~1600 ms, in background)
+    Note over B: page visible immediately,<br/>products appear after

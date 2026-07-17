@@ -1,22 +1,22 @@
 flowchart TD
-    ROOT["Shopware Autoresearch<br/>33 Claims"]
+    ROOT["Shopware Autoresearch<br/>33 claims"]
 
-    ROOT --> S1["Strang 1 · Request<br/>4 ✓ / 8 ✗ / 2 ○"]
-    ROOT --> S2["Strang 2 · API<br/>1 ✓ / 3 ✗"]
-    ROOT --> S3["Strang 3 · Scale<br/>6 ✓ / 6 ✗ / 1 ○"]
+    ROOT --> S1["Strand 1 · Request<br/>4 ✓ / 8 ✗ / 2 ○"]
+    ROOT --> S2["Strand 2 · API<br/>1 ✓ / 3 ✗"]
+    ROOT --> S3["Strand 3 · Scale<br/>6 ✓ / 6 ✗ / 1 ○"]
     ROOT --> INF["Infra<br/>1 ✓"]
 
     S1 --> S1A["Home deferred · 199 ms ✓"]
     S1 --> S1B["Widget async · 1620 ms ✓"]
-    S1 --> S1C["HTTP-Cache · blockiert ✗"]
+    S1 --> S1C["HTTP cache · blocked ✗"]
 
-    S3 --> S3A["Category Listing · 184 ms ✓"]
-    S3 --> S3B["Listing-CMS deferred · 200 ms ✓"]
-    S3 --> S3C["Admin Grid query-only · 71 ms ✓"]
-    S3 --> S3D["Admin Search std · ~316 ms ✗"]
+    S3 --> S3A["Category listing · 184 ms ✓"]
+    S3 --> S3B["Listing CMS deferred · 200 ms ✓"]
+    S3 --> S3C["Admin grid query-only · 71 ms ✓"]
+    S3 --> S3D["Admin search std · ~316 ms ✗"]
 
-    S2 --> S2A["Store API List · 96 ms ✓"]
-    S2 --> S2B["Association/Field Trim · ~109 ms ✗"]
+    S2 --> S2A["Store API list · 96 ms ✓"]
+    S2 --> S2B["Association/field trim · ~109 ms ✗"]
 
     classDef ok fill:#17B26A,stroke:#0E8A50,color:#fff;
     classDef bad fill:#F04438,stroke:#B42318,color:#fff;

@@ -89,17 +89,17 @@ h2, h3 { break-after: avoid-page; }
 COVER = """
 <div class="cover">
   <div class="kicker">Shopware · Agentic Commerce Lab</div>
-  <h1>Shopware Autoresearch<br/>Forschungsergebnisse</h1>
+  <h1>Shopware Autoresearch<br/>Research Results</h1>
   <div class="bar"></div>
-  <div class="sub">Performance-Optimierung bei 100.000 Produkten &mdash;
-  drei Forschungsstränge, sechs Optimierungs-Wellen, verifiziert mit Pawl.</div>
+  <div class="sub">Performance optimization at 100,000 products &mdash;
+  three research strands, six optimization waves, verified with Pawl.</div>
   <div class="stats">
-    <div class="stat"><div class="n">33</div><div class="l">Experimente</div></div>
+    <div class="stat"><div class="n">33</div><div class="l">Experiments</div></div>
     <div class="stat"><div class="n g">12</div><div class="l">Verified</div></div>
     <div class="stat"><div class="n r">18</div><div class="l">Failed</div></div>
     <div class="stat"><div class="n a">3</div><div class="l">Planned</div></div>
   </div>
-  <div class="meta">Stand: 2026-07-16 &middot; Ground Truth: verification/registry.csv</div>
+  <div class="meta">As of: 2026-07-16 &middot; Ground truth: verification/registry.csv</div>
 </div>
 """
 

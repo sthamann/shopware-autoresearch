@@ -81,9 +81,9 @@ Three performance strands — see `docs/big-picture.md`:
 
 | # | Strand | Focus |
 |---|--------|-------|
-| 1 | **Request-Performance** | Single HTTP requests faster (TTFB, pipeline, caching) |
-| 2 | **API-Performance** | Store API, Admin API, Sync API optimization |
-| 3 | **Katalog-Skalierung** | ≥ 100k products — storefront + admin |
+| 1 | **Request performance** | Single HTTP requests faster (TTFB, pipeline, caching) |
+| 2 | **API performance** | Store API, Admin API, Sync API optimization |
+| 3 | **Catalog scaling** | ≥ 100k products — storefront + admin |
 
 ```bash
 python3 pawl/tools/memory.py fronts    # status per strand
@@ -97,6 +97,41 @@ Fixed harnesses live under `verification/bench/<strand>/` — sacred, harness-ow
 see `verification/bench/README.md`.
 
 See `AGENTS.md` for the full agent workflow.
+
+## Current progress
+
+> **As of 2026-07-16** — Bootstrap + Waves 1–6 complete. Full write-up:
+> [`RESEARCH_RESULTS.md`](RESEARCH_RESULTS.md) · [`RESEARCH_RESULTS.pdf`](RESEARCH_RESULTS.pdf)
+
+All measurements are from official Pawl gates against a **100,000-product** catalog.
+
+| Metric | Value |
+|--------|------:|
+| Experiments (claims) | **33** |
+| Verified | **12** |
+| Failed (honest negatives) | **18** |
+| Planned (Wave 7) | **3** |
+| Completed waves | **6** (+ bootstrap) |
+
+**Biggest breakthroughs**
+
+| Route | Before | After | Change | Mechanism |
+|-------|-------:|------:|-------:|-----------|
+| Home `/` | 3,199 ms | **199 ms** | −94 % | Deferred product listing |
+| Listing CMS | 1,681 ms | **200 ms** | −88 % | Deferred product listing (CMS pages) |
+| Admin search | 316 ms | **71 ms** | −78 % | Query-only grid endpoint (DBAL) |
+
+**Per-strand state @ 100k**
+
+- **Strand 1 (Request):** home **199 ms** (deferred), category **186 ms**, widget async **1,598 ms**; HTTP cache blocked by session cookie.
+- **Strand 2 (API):** Store API product list **96 ms** (baseline); association/field trims plateau at ~109 ms.
+- **Strand 3 (Scale):** category listing **184 ms**, listing CMS deferred **200 ms**, admin grid query-only **71 ms**; standard admin search floor ~316 ms.
+
+Optimizations ship in [`extensions/AutoresearchPerf/`](extensions/AutoresearchPerf/); results
+are reproducible via `docs/assets/gen_charts.py` and `docs/build_pdf.py`.
+
+**Open (Wave 7):** wire the query-only admin grid into the standard search path,
+CACHE_REWORK policies for cookie-less GETs, and a listing-only widget partial.
 
 ## Docker compose model
 

@@ -82,14 +82,14 @@ def performance_landscape():
     fig, ax = plt.subplots(figsize=(10, 5.2))
     bars = ax.barh(labels, vals, color=colors, height=0.62, zorder=3)
     ax.set_xlim(0, 1750)
-    ax.set_xlabel("p95 Latenz (ms) — niedriger ist besser")
-    ax.set_title("Performance-Landschaft @ 100.000 Produkte",
+    ax.set_xlabel("p95 latency (ms) — lower is better")
+    ax.set_title("Performance Landscape @ 100,000 products",
                  fontsize=15, fontweight="bold", pad=14, loc="left")
     for bar, v in zip(bars, vals):
         ax.text(bar.get_width() + 18, bar.get_y() + bar.get_height() / 2,
                 f"{v} ms", va="center", ha="left", fontweight="bold", fontsize=11)
     ax.axvline(500, color=SLATE, ls="--", lw=1.2, zorder=2)
-    ax.text(505, 6.3, "500 ms Ziel-Marke", color=SLATE, fontsize=10, style="italic")
+    ax.text(505, 6.3, "500 ms target", color=SLATE, fontsize=10, style="italic")
     _no_top_right(ax)
     ax.set_axisbelow(True)
     ax.xaxis.grid(True)
@@ -103,22 +103,22 @@ def performance_landscape():
 def before_after():
     items = [
         ("Home  /", 3199, 199),
-        ("Listing-CMS", 1681, 200),
-        ("Admin-Suche", 316, 71),
+        ("Listing CMS", 1681, 200),
+        ("Admin search", 316, 71),
     ]
     fig, ax = plt.subplots(figsize=(10, 5.2))
     x = range(len(items))
     w = 0.36
     before = [i[1] for i in items]
     after = [i[2] for i in items]
-    b1 = ax.bar([i - w / 2 for i in x], before, width=w, color=RED, label="vorher", zorder=3)
-    b2 = ax.bar([i + w / 2 for i in x], after, width=w, color=GREEN, label="nachher", zorder=3)
+    b1 = ax.bar([i - w / 2 for i in x], before, width=w, color=RED, label="before", zorder=3)
+    b2 = ax.bar([i + w / 2 for i in x], after, width=w, color=GREEN, label="after", zorder=3)
     ax.set_yscale("log")
     ax.set_ylim(30, 5000)
     ax.set_xticks(list(x))
     ax.set_xticklabels([i[0] for i in items], fontweight="bold")
-    ax.set_ylabel("p95 Latenz (ms, log)")
-    ax.set_title("Vorher / Nachher — die drei gr\u00f6\u00dften Durchbr\u00fcche",
+    ax.set_ylabel("p95 latency (ms, log)")
+    ax.set_title("Before / After — the three biggest breakthroughs",
                  fontsize=15, fontweight="bold", pad=14, loc="left")
     for bar, v in zip(b1, before):
         ax.text(bar.get_x() + bar.get_width() / 2, v * 1.05, f"{v}", ha="center",
@@ -150,8 +150,8 @@ def wave_results():
     b2 = ax.bar(x, failed, bottom=verified, color=RED, label="Failed", zorder=3)
     ax.set_xticks(list(x))
     ax.set_xticklabels(waves, fontweight="bold")
-    ax.set_ylabel("Anzahl Claims")
-    ax.set_title("Ergebnis pro Optimierungs-Welle",
+    ax.set_ylabel("Number of claims")
+    ax.set_title("Results per optimization wave",
                  fontsize=15, fontweight="bold", pad=14, loc="left")
     for i in x:
         if verified[i]:
@@ -178,7 +178,7 @@ def status_donut():
     wedges, _ = ax.pie(sizes, colors=colors, startangle=90,
                        wedgeprops=dict(width=0.42, edgecolor=BG, linewidth=3))
     ax.text(0, 0.15, "33", ha="center", va="center", fontsize=34, fontweight="bold", color=INK)
-    ax.text(0, -0.22, "Claims gesamt", ha="center", va="center", fontsize=12, color=SLATE)
+    ax.text(0, -0.22, "total claims", ha="center", va="center", fontsize=12, color=SLATE)
     for w, lab, col in zip(wedges, labels, colors):
         ang = (w.theta2 + w.theta1) / 2
         import math
@@ -186,7 +186,7 @@ def status_donut():
         yy = 1.15 * math.sin(math.radians(ang))
         ax.text(xx, yy, lab, ha="center", va="center", fontsize=12,
                 fontweight="bold", color=col)
-    ax.set_title("Claim-Status (Ground Truth: registry.csv)",
+    ax.set_title("Claim status (ground truth: registry.csv)",
                  fontsize=15, fontweight="bold", pad=6)
     save(fig, "04-status-donut.png")
 
@@ -195,7 +195,7 @@ def status_donut():
 # 5. Claims per strand — stacked horizontal
 # ---------------------------------------------------------------------------
 def per_strand():
-    strands = ["Infra", "Strang 2\nAPI", "Strang 1\nRequest", "Strang 3\nScale"]
+    strands = ["Infra", "Strand 2\nAPI", "Strand 1\nRequest", "Strand 3\nScale"]
     verified = [1, 1, 4, 6]
     failed = [0, 3, 8, 6]
     planned = [0, 0, 2, 1]
@@ -214,8 +214,8 @@ def per_strand():
         if planned[i]:
             ax.text(left2[i] + planned[i] / 2, i, planned[i], ha="center", va="center",
                     color="white", fontweight="bold")
-    ax.set_xlabel("Anzahl Claims")
-    ax.set_title("Claims pro Forschungsstrang",
+    ax.set_xlabel("Number of claims")
+    ax.set_title("Claims per research strand",
                  fontsize=15, fontweight="bold", pad=14, loc="left")
     ax.legend(frameon=False, loc="lower right", ncol=3)
     _no_top_right(ax)
@@ -245,9 +245,9 @@ def cumulative():
         ax.text(i, v + 0.5, str(v), ha="center", fontweight="bold", color=BLUE)
     ax.set_xticks(list(x))
     ax.set_xticklabels(waves, fontweight="bold")
-    ax.set_ylabel("Verified Claims (kumuliert)")
+    ax.set_ylabel("Verified claims (cumulative)")
     ax.set_ylim(0, 15)
-    ax.set_title("Kumulierte verifizierte Erfolge \u00fcber die Wellen",
+    ax.set_title("Cumulative verified wins across waves",
                  fontsize=15, fontweight="bold", pad=14, loc="left")
     _no_top_right(ax)
     ax.set_axisbelow(True)

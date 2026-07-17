@@ -1,22 +1,22 @@
 flowchart LR
-    W1["W1 Listing-Trim<br/>184 ms ✓"] --> W3["W3 Profiling<br/>Root Cause ✓"]
-    W3 --> W4D["W4 Home defer<br/>199 ms ✓"]
-    W4D --> W5W["W5 Widget UX<br/>1620 ms ✓"]
-    W1 --> W4T["W4 True-CMS<br/>1681 ms ✓"]
+    W1["W1 listing trim<br/>184 ms ✓"] --> W3["W3 profiling<br/>root cause ✓"]
+    W3 --> W4D["W4 home defer<br/>199 ms ✓"]
+    W4D --> W5W["W5 widget UX<br/>1620 ms ✓"]
+    W1 --> W4T["W4 true CMS<br/>1681 ms ✓"]
     W4T --> W5D["W5 CMS defer<br/>200 ms ✓"]
-    W5D --> W6G["W6 Admin Grid<br/>71 ms ✓"]
+    W5D --> W6G["W6 admin grid<br/>71 ms ✓"]
 
-    W1F["W1 HTTP-Cache ✗"] --> W2H["W2 Home overhead ✗"]
+    W1F["W1 HTTP cache ✗"] --> W2H["W2 home overhead ✗"]
     W2H --> W3H["W3 overhead.02 ✗"]
-    W3H -.Erkenntnis.-> W4D
-    W1F --> W3C["W3 Category-Cache ✗"]
-    W3C --> W4S["W4 Session-Bypass ✗"]
-    W4S --> W5S["W5 Stateless ✗"]
-    W5S --> W6S["W6 Cache-Policy ✗"]
+    W3H -.insight.-> W4D
+    W1F --> W3C["W3 category cache ✗"]
+    W3C --> W4S["W4 session bypass ✗"]
+    W4S --> W5S["W5 stateless ✗"]
+    W5S --> W6S["W6 cache policy ✗"]
     W6S --> W7S["W7 CACHE_REWORK ○"]
 
-    W5W --> W6W["W6 Widget-Tight ✗"]
-    W6W --> W7W["W7 Listing-only ○"]
+    W5W --> W6W["W6 widget tight ✗"]
+    W6W --> W7W["W7 listing-only ○"]
 
     classDef ok fill:#17B26A,stroke:#0E8A50,color:#fff;
     classDef bad fill:#F04438,stroke:#B42318,color:#fff;
